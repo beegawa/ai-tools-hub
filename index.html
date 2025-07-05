@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 도구 허브 2025 - 완전한 데이터베이스</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .star-rating {
+            color: #fbbf24;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .discount-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="glass-effect sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                        🤖 AI 도구 허브 2025
+                    </h1>
+                </div>
+                <div class="flex-1 max-w-lg mx-8">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="AI 도구 검색..." 
+                               class="w-full px-6 py-3 pl-12 rounded-full border-2 border-purple-200 focus:border-purple-500 focus:outline-none">
+                        <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <span class="font-semibold">55개 도구</span> | <span class="font-semibold">8개 카테고리</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Category Navigation -->
+        <nav class="mb-8">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="category-btn active px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="all">
+                    <i class="fas fa-th-large mr-2"></i>전체 (55)
+                </button>
+                <button class="category-btn px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="chat">
+                    <i class="fas fa-comments mr-2"></i>AI 채팅 (8)
+                </button>
+                <button class="category-btn px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="image">
+                    <i class="fas fa-image mr-2"></i>이미지 (12)
+                </button>
+                <button class="category-btn px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="video">
+                    <i class="fas fa-video mr-2"></i>동영상 (8)
+                </button>
+                <button class="category-btn px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="music">
+                    <i class="fas fa-music mr-2"></i>음악 (6)
+                </button>
+                <button class="category-btn px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="coding">
+                    <i class="fas fa-code mr-2"></i>코딩 (8)
+                </button>
+                <button class="category-btn px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="writing">
+                    <i class="fas fa-pen mr-2"></i>글쓰기 (7)
+                </button>
+                <button class="category-btn px-6 py-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300" data-category="design">
+                    <i class="fas fa-palette mr-2"></i>디자인 (6)
+                </button>
+            </div>
+        </nav>
+
+        <!-- Filters -->
+        <div class="glass-effect rounded-xl p-6 mb-8">
+            <div class="flex flex-wrap gap-4 items-center">
+                <div class="flex items-center space-x-2">
+                    <label class="font-medium text-gray-700">가격:</label>
+                    <select id="priceFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="all">전체</option>
+                        <option value="free">무료</option>
+                        <option value="freemium">프리미엄</option>
+                        <option value="paid">유료</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="font-medium text-gray-700">평점:</label>
+                    <select id="ratingFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="all">전체</option>
+                        <option value="5">5점</option>
+                        <option value="4">4점 이상</option>
+                        <option value="3">3점 이상</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="font-medium text-gray-700">정렬:</label>
+                    <select id="sortFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="rating">평점순</option>
+                        <option value="users">사용자수</option>
+                        <option value="price">가격순</option>
+                        <option value="name">이름순</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="discountFilter" class="rounded">
+                    <label for="discountFilter" class="font-medium text-gray-700">할인 중만</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+            <!-- Tools Grid -->
+            <div class="xl:col-span-3">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-white mb-2">🔥 인기 AI 도구</h2>
+                    <p class="text-white opacity-75">최신 AI 도구들을 인기순으로 확인하세요</p>
+                </div>
+                <div id="toolsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Tools will be populated by JavaScript -->
+                </div>
+                <div id="noResults" class="hidden text-center py-12">
+                    <i class="fas fa-search text-6xl text-white opacity-50 mb-4"></i>
+                    <p class="text-white text-xl">검색 결과가 없습니다</p>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="xl:col-span-1 space-y-6">
+                <!-- Rankings -->
+                <div class="glass-effect rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                        AI 성능 순위
+                    </h3>
+                    <div class="space-y-3" id="rankingsContainer">
+                        <!-- Rankings will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Performance Chart -->
+                <div class="glass-effect rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-chart-bar text-blue-500 mr-2"></i>
+                        카테고리별 도구 수
+                    </h3>
+                    <div style="height: 300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Latest News -->
+                <div class="glass-effect rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-newspaper text-green-500 mr-2"></i>
+                        최신 AI 뉴스
+                    </h3>
+                    <div class="space-y-4" id="newsContainer">
+                        <!-- News will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Rankings Section -->
+        <div class="glass-effect rounded-xl p-8 mt-12">
+            <h2 class="text-3xl font-bold mb-8 text-center">📊 AI 도구 성능 비교</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold mb-4 text-purple-600">💬 AI 채팅</h3>
+                    <div style="height: 250px;">
+                        <canvas id="chatChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold mb-4 text-purple-600">🎨 이미지 생성</h3>
+                    <div style="height: 250px;">
+                        <canvas id="imageChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold mb-4 text-purple-600">🎬 동영상</h3>
+                    <div style="height: 250px;">
+                        <canvas id="videoChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold mb-4 text-purple-600">🎵 음악</h3>
+                    <div style="height: 250px;">
+                        <canvas id="musicChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tool Detail Modal -->
+    <div id="toolModal" class="modal">
+        <div class="bg-white rounded-xl p-8 max-w-4xl max-h-screen overflow-y-auto m-4 relative">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modalContent">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Comprehensive AI Tools Data
+        const aiTools = [
+            // AI Chat Tools
+            {
+                id: 1, name: "ChatGPT", emoji: "🤖", category: "chat", rating: 4.8, users: "100M+",
+                price: "무료/월 $20", priceType: "freemium", discount: "Plus 첫달 50% 할인",
+                description: "OpenAI의 혁신적인 대화형 AI로 텍스트 생성, 코딩, 분석 등 다양한 작업을 수행합니다.",
+                features: ["GPT-4 모델", "코드 생성", "이미지 분석", "파일 업로드", "플러그인"],
+                pros: ["뛰어난 이해력", "다양한 작업", "지속적 업데이트"], cons: ["실시간 정보 제한", "가끔 부정확"],
+                website: "https://chat.openai.com", released: "2022-11"
+            },
+            {
+                id: 2, name: "Claude", emoji: "🧠", category: "chat", rating: 4.7, users: "50M+",
+                price: "무료/월 $20", priceType: "freemium", discount: "Pro 첫달 무료",
+                description: "Anthropic의 안전하고 도움이 되는 AI 어시스턴트로 긴 문서 분석에 특화되어 있습니다.",
+                features: ["안전한 AI", "긴 문맥", "파일 분석", "창작 지원"], pros: ["뛰어난 안전성", "긴 문맥 처리"], cons: ["느린 응답", "제한된 접근"],
+                website: "https://claude.ai", released: "2023-03"
+            },
+            {
+                id: 3, name: "Gemini", emoji: "💎", category: "chat", rating: 4.6, users: "80M+",
+                price: "무료/월 $20", priceType: "freemium", discount: "Google One 할인",
+                description: "Google의 멀티모달 AI로 텍스트, 이미지, 동영상을 함께 처리할 수 있습니다.",
+                features: ["멀티모달", "실시간 정보", "Google 통합", "YouTube 연동"], pros: ["실시간 정보", "Google 연동"], cons: ["새로운 서비스", "언어 제한"],
+                website: "https://gemini.google.com", released: "2023-12"
+            },
+            {
+                id: 4, name: "Perplexity", emoji: "🔍", category: "chat", rating: 4.5, users: "10M+",
+                price: "무료/월 $20", priceType: "freemium", discount: "연간 결제 20% 할인",
+                description: "실시간 웹 검색과 AI를 결합한 차세대 검색 엔진입니다.",
+                features: ["실시간 검색", "출처 제공", "이미지 검색", "요약"], pros: ["정확한 정보", "출처 명시"], cons: ["제한된 창작", "검색 중심"],
+                website: "https://perplexity.ai", released: "2022-12"
+            },
+            {
+                id: 5, name: "Character.AI", emoji: "🎭", category: "chat", rating: 4.3, users: "20M+",
+                price: "무료/월 $9.99", priceType: "freemium", discount: "Plus 첫달 50% 할인",
+                description: "다양한 캐릭터와 대화할 수 있는 AI 채팅 플랫폼입니다.",
+                features: ["캐릭터 채팅", "롤플레이", "음성 대화", "커뮤니티"], pros: ["재미있는 대화", "다양한 캐릭터"], cons: ["제한된 실용성", "중독성"],
+                website: "https://character.ai", released: "2022-09"
+            },
+            {
+                id: 6, name: "Pi", emoji: "🤝", category: "chat", rating: 4.2, users: "5M+",
+                price: "무료", priceType: "free", discount: "",
+                description: "Inflection AI의 개인 AI 어시스턴트로 친근한 대화에 특화되어 있습니다.",
+                features: ["친근한 대화", "감정 이해", "개인화", "음성 지원"], pros: ["친근함", "감정적 지원"], cons: ["제한된 기능", "영어 중심"],
+                website: "https://pi.ai", released: "2023-05"
+            },
+            {
+                id: 7, name: "Poe", emoji: "🎯", category: "chat", rating: 4.4, users: "15M+",
+                price: "무료/월 $19.99", priceType: "freemium", discount: "첫달 무료",
+                description: "Quora의 AI 플랫폼으로 다양한 AI 모델을 한 곳에서 사용할 수 있습니다.",
+                features: ["다양한 모델", "모델 비교", "봇 생성", "API"], pros: ["모델 다양성", "비교 가능"], cons: ["복잡한 인터페이스", "높은 가격"],
+                website: "https://poe.com", released: "2023-02"
+            },
+            {
+                id: 8, name: "Copilot", emoji: "🚁", category: "chat", rating: 4.1, users: "30M+",
+                price: "무료/월 $20", priceType: "freemium", discount: "Microsoft 365 포함",
+                description: "Microsoft의 AI 어시스턴트로 Office 제품군과 통합되어 있습니다.",
+                features: ["Office 통합", "이미지 생성", "웹 검색", "코딩"], pros: ["Office 통합", "다양한 기능"], cons: ["Microsoft 의존", "복잡성"],
+                website: "https://copilot.microsoft.com", released: "2023-02"
+            },
+
+            // AI Image Tools
+            {
+                id: 9, name: "Midjourney", emoji: "🎨", category: "image", rating: 4.9, users: "20M+",
+                price: "월 $10-60", priceType: "paid", discount: "연간 결제 20% 할인",
+                description: "세계 최고 품질의 AI 이미지 생성 도구로 예술적 창작에 특화되어 있습니다.",
+                features: ["고품질 이미지", "다양한 스타일", "커뮤니티", "상업적 이용"], pros: ["최고 품질", "예술적 스타일"], cons: ["Discord 기반", "높은 가격"],
+                website: "https://midjourney.com", released: "2022-07"
+            },
+            {
+                id: 10, name: "DALL-E 3", emoji: "🖼️", category: "image", rating: 4.6, users: "50M+",
+                price: "ChatGPT Plus 포함", priceType: "paid", discount: "",
+                description: "OpenAI의 최신 이미지 생성 AI로 정확한 텍스트 이해와 안전성을 제공합니다.",
+                features: ["정확한 텍스트", "안전성", "ChatGPT 통합", "편집"], pros: ["정확한 이해", "안전함"], cons: ["제한된 스타일", "ChatGPT 의존"],
+                website: "https://openai.com/dall-e-3", released: "2023-10"
+            },
+            {
+                id: 11, name: "Stable Diffusion", emoji: "🌊", category: "image", rating: 4.5, users: "10M+",
+                price: "무료", priceType: "free", discount: "완전 무료 오픈소스",
+                description: "오픈소스 이미지 생성 AI로 로컬에서 실행 가능하고 커스터마이징이 자유롭습니다.",
+                features: ["오픈소스", "로컬 실행", "커스터마이징", "무료"], pros: ["완전 무료", "높은 자유도"], cons: ["기술적 지식 필요", "하드웨어 요구"],
+                website: "https://stability.ai", released: "2022-08"
+            },
+            {
+                id: 12, name: "Leonardo AI", emoji: "🎭", category: "image", rating: 4.4, users: "5M+",
+                price: "무료/월 $10-48", priceType: "freemium", discount: "첫달 50% 할인",
+                description: "게임과 콘텐츠 제작에 특화된 AI 이미지 생성 플랫폼입니다.",
+                features: ["게임 아트", "일관된 스타일", "3D 텍스처", "애니메이션"], pros: ["게임 특화", "일관성"], cons: ["제한된 무료", "학습 곡선"],
+                website: "https://leonardo.ai", released: "2023-01"
+            },
+            {
+                id: 13, name: "Ideogram", emoji: "📐", category: "image", rating: 4.3, users: "3M+",
+                price: "무료/월 $7-20", priceType: "freemium", discount: "Pro 첫달 무료",
+                description: "텍스트가 포함된 이미지 생성에 특화된 AI 도구입니다.",
+                features: ["텍스트 렌더링", "로고 생성", "포스터", "타이포그래피"], pros: ["뛰어난 텍스트", "빠른 생성"], cons: ["제한된 스타일", "단순한 이미지"],
+                website: "https://ideogram.ai", released: "2023-08"
+            },
+            {
+                id: 14, name: "Flux", emoji: "⚡", category: "image", rating: 4.2, users: "2M+",
+                price: "무료/월 $10", priceType: "freemium", discount: "베타 무료 사용",
+                description: "빠른 속도와 높은 품질을 자랑하는 새로운 이미지 생성 AI입니다.",
+                features: ["빠른 생성", "고품질", "API", "다양한 모델"], pros: ["매우 빠름", "좋은 품질"], cons: ["새로운 서비스", "제한된 기능"],
+                website: "https://flux.ai", released: "2024-08"
+            },
+            {
+                id: 15, name: "Adobe Firefly", emoji: "🔥", category: "image", rating: 4.4, users: "10M+",
+                price: "월 $4.99-22.99", priceType: "paid", discount: "Creative Cloud 포함",
+                description: "Adobe의 창작 AI로 상업적으로 안전한 이미지 생성을 제공합니다.",
+                features: ["상업적 안전", "Adobe 통합", "벡터 생성", "텍스트 효과"], pros: ["상업적 안전", "Adobe 연동"], cons: ["구독 필요", "제한된 무료"],
+                website: "https://firefly.adobe.com", released: "2023-03"
+            },
+            {
+                id: 16, name: "Canva AI", emoji: "🎨", category: "image", rating: 4.6, users: "100M+",
+                price: "무료/월 $12.99-30", priceType: "freemium", discount: "Pro 첫달 무료",
+                description: "디자인 플랫폼에 통합된 AI 이미지 생성 기능입니다.",
+                features: ["디자인 통합", "템플릿", "브랜드 키트", "협업"], pros: ["사용 쉬움", "디자인 통합"], cons: ["제한된 AI", "템플릿 의존"],
+                website: "https://canva.com", released: "2013-01"
+            },
+            {
+                id: 17, name: "Playground AI", emoji: "🎪", category: "image", rating: 4.1, users: "1M+",
+                price: "무료/월 $15", priceType: "freemium", discount: "무제한 무료 사용",
+                description: "사용자 친화적인 인터페이스를 가진 AI 이미지 생성 플랫폼입니다.",
+                features: ["쉬운 인터페이스", "다양한 모델", "편집 도구", "커뮤니티"], pros: ["사용하기 쉬움", "다양한 모델"], cons: ["제한된 품질", "느린 생성"],
+                website: "https://playground.com", released: "2023-01"
+            },
+            {
+                id: 18, name: "DreamStudio", emoji: "💭", category: "image", rating: 4.0, users: "2M+",
+                price: "크레딧 $10", priceType: "paid", discount: "첫 크레딧 보너스",
+                description: "Stability AI의 공식 웹 인터페이스로 Stable Diffusion을 쉽게 사용할 수 있습니다.",
+                features: ["Stable Diffusion", "고급 설정", "배치 생성", "API"], pros: ["전문적 도구", "고급 옵션"], cons: ["복잡한 인터페이스", "크레딧 시스템"],
+                website: "https://dreamstudio.ai", released: "2022-08"
+            },
+            {
+                id: 19, name: "Artbreeder", emoji: "🧬", category: "image", rating: 3.9, users: "1M+",
+                price: "무료/월 $8.99", priceType: "freemium", discount: "",
+                description: "이미지 합성과 진화를 통한 창작 플랫폼입니다.",
+                features: ["이미지 합성", "진화", "애니메이션", "협업"], pros: ["독특한 접근", "창의적"], cons: ["제한된 스타일", "복잡한 사용"],
+                website: "https://artbreeder.com", released: "2018-01"
+            },
+            {
+                id: 20, name: "NightCafe", emoji: "🌙", category: "image", rating: 4.0, users: "2M+",
+                price: "무료/월 $5.99", priceType: "freemium", discount: "일일 무료 크레딧",
+                description: "다양한 AI 아트 스타일을 제공하는 커뮤니티 중심 플랫폼입니다.",
+                features: ["다양한 스타일", "커뮤니티", "프린트", "NFT"], pros: ["커뮤니티", "다양한 스타일"], cons: ["제한된 품질", "느린 생성"],
+                website: "https://nightcafe.studio", released: "2019-11"
+            },
+
+            // AI Video Tools
+            {
+                id: 21, name: "Runway", emoji: "🎬", category: "video", rating: 4.7, users: "10M+",
+                price: "무료/월 $12-76", priceType: "freemium", discount: "학생 할인 50%",
+                description: "AI 기반 비디오 편집 및 생성의 선두주자입니다.",
+                features: ["비디오 생성", "편집", "특수효과", "AI 마스킹"], pros: ["다양한 기능", "고품질"], cons: ["높은 가격", "처리 시간"],
+                website: "https://runwayml.com", released: "2018-06"
+            },
+            {
+                id: 22, name: "Pika Labs", emoji: "⚡", category: "video", rating: 4.5, users: "5M+",
+                price: "무료/월 $10-70", priceType: "freemium", discount: "베타 무료 사용",
+                description: "텍스트와 이미지로 짧은 비디오를 생성하는 혁신적 도구입니다.",
+                features: ["텍스트-비디오", "이미지-비디오", "애니메이션", "루프"], pros: ["쉬운 사용", "빠른 생성"], cons: ["짧은 길이", "제한된 제어"],
+                website: "https://pika.art", released: "2023-04"
+            },
+            {
+                id: 23, name: "Synthesia", emoji: "👤", category: "video", rating: 4.4, users: "3M+",
+                price: "월 $30-90", priceType: "paid", discount: "기업 할인 30%",
+                description: "AI 아바타를 사용한 전문적인 비디오 제작 플랫폼입니다.",
+                features: ["AI 아바타", "다국어", "템플릿", "브랜딩"], pros: ["전문적", "다국어 지원"], cons: ["높은 가격", "제한된 커스터마이징"],
+                website: "https://synthesia.io", released: "2017-01"
+            },
+            {
+                id: 24, name: "Luma AI", emoji: "🌟", category: "video", rating: 4.3, users: "2M+",
+                price: "무료/월 $30", priceType: "freemium", discount: "첫달 무료",
+                description: "3D 캡처와 비디오 생성을 위한 차세대 AI 도구입니다.",
+                features: ["3D 캡처", "비디오 생성", "AR/VR", "모바일"], pros: ["혁신적 기술", "모바일 친화"], cons: ["제한된 기능", "학습 곡선"],
+                website: "https://lumalabs.ai", released: "2021-09"
+            },
+            {
+                id: 25, name: "Steve AI", emoji: "📹", category: "video", rating: 4.2, users: "1M+",
+                price: "무료/월 $15-45", priceType: "freemium", discount: "연간 결제 40% 할인",
+                description: "텍스트에서 애니메이션 비디오를 자동 생성하는 도구입니다.",
+                features: ["텍스트-비디오", "애니메이션", "템플릿", "음성"], pros: ["자동 생성", "템플릿 다양"], cons: ["제한된 스타일", "품질 편차"],
+                website: "https://steve.ai", released: "2020-03"
+            },
+            {
+                id: 26, name: "D-ID", emoji: "🗣️", category: "video", rating: 4.1, users: "2M+",
+                price: "무료/월 $5.99-49.99", priceType: "freemium", discount: "무료 크레딧 제공",
+                description: "사진을 말하는 비디오로 변환하는 AI 도구입니다.",
+                features: ["사진 애니메이션", "음성 합성", "다국어", "API"], pros: ["쉬운 사용", "빠른 생성"], cons: ["제한된 품질", "부자연스러움"],
+                website: "https://d-id.com", released: "2017-01"
+            },
+            {
+                id: 27, name: "Pictory", emoji: "📚", category: "video", rating: 4.0, users: "1M+",
+                price: "월 $19-99", priceType: "paid", discount: "14일 무료 체험",
+                description: "긴 콘텐츠를 짧은 비디오로 변환하는 AI 도구입니다.",
+                features: ["콘텐츠 요약", "자동 편집", "자막", "음악"], pros: ["콘텐츠 재활용", "자동화"], cons: ["제한된 창의성", "템플릿 의존"],
+                website: "https://pictory.ai", released: "2020-01"
+            },
+            {
+                id: 28, name: "InVideo", emoji: "🎥", category: "video", rating: 4.3, users: "7M+",
+                price: "무료/월 $15-30", priceType: "freemium", discount: "연간 결제 50% 할인",
+                description: "AI 기반 비디오 편집 플랫폼으로 마케팅 비디오에 특화되어 있습니다.",
+                features: ["AI 편집", "템플릿", "음성", "자막"], pros: ["마케팅 특화", "템플릿 풍부"], cons: ["복잡한 인터페이스", "품질 편차"],
+                website: "https://invideo.io", released: "2017-01"
+            },
+
+            // AI Music Tools
+            {
+                id: 29, name: "Suno", emoji: "🎵", category: "music", rating: 4.8, users: "10M+",
+                price: "무료/월 $10-30", priceType: "freemium", discount: "Pro 첫달 50% 할인",
+                description: "텍스트로 완전한 음악을 생성하는 혁신적 AI 도구입니다.",
+                features: ["음악 생성", "가사 작성", "다양한 장르", "확장"], pros: ["놀라운 품질", "다양한 장르"], cons: ["저작권 이슈", "제한된 길이"],
+                website: "https://suno.ai", released: "2023-05"
+            },
+            {
+                id: 30, name: "Udio", emoji: "🎼", category: "music", rating: 4.6, users: "5M+",
+                price: "무료/월 $10-30", priceType: "freemium", discount: "베타 무료 사용",
+                description: "고품질 음악과 보컬을 생성하는 차세대 AI 음악 도구입니다.",
+                features: ["음악 생성", "보컬 합성", "장르 다양", "확장"], pros: ["뛰어난 보컬", "다양한 스타일"], cons: ["새로운 서비스", "제한된 무료"],
+                website: "https://udio.com", released: "2024-04"
+            },
+            {
+                id: 31, name: "Mubert", emoji: "🔄", category: "music", rating: 4.2, users: "3M+",
+                price: "무료/월 $14-39", priceType: "freemium", discount: "연간 결제 25% 할인",
+                description: "실시간 AI 음악 생성으로 스트리밍과 콘텐츠에 특화되어 있습니다.",
+                features: ["실시간 생성", "로열티 프리", "API", "스트리밍"], pros: ["실시간", "상업적 이용"], cons: ["제한된 창작성", "반복적"],
+                website: "https://mubert.com", released: "2017-01"
+            },
+            {
+                id: 32, name: "AIVA", emoji: "🎹", category: "music", rating: 4.1, users: "1M+",
+                price: "무료/월 $11-33", priceType: "freemium", discount: "학생 할인 50%",
+                description: "클래식과 영화 음악에 특화된 전문적 AI 작곡 도구입니다.",
+                features: ["클래식", "영화 음악", "MIDI", "커스터마이징"], pros: ["전문적 작곡", "MIDI 지원"], cons: ["제한된 장르", "복잡한 UI"],
+                website: "https://aiva.ai", released: "2016-02"
+            },
+            {
+                id: 33, name: "Beatoven.ai", emoji: "🥁", category: "music", rating: 4.0, users: "500K+",
+                price: "무료/월 $6-20", priceType: "freemium", discount: "첫달 무료",
+                description: "콘텐츠 제작자를 위한 맞춤형 배경 음악 생성 도구입니다.",
+                features: ["배경 음악", "분위기 조절", "저작권 프리", "비디오 동기화"], pros: ["콘텐츠 특화", "저작권 안전"], cons: ["제한된 스타일", "단조로움"],
+                website: "https://beatoven.ai", released: "2021-10"
+            },
+            {
+                id: 34, name: "Soundraw", emoji: "🎚️", category: "music", rating: 3.9, users: "1M+",
+                price: "무료/월 $16.99-29.99", priceType: "freemium", discount: "연간 결제 33% 할인",
+                description: "저작권 걱정 없는 AI 음악 생성 플랫폼입니다.",
+                features: ["저작권 프리", "커스터마이징", "다운로드", "라이선스"], pros: ["저작권 안전", "상업적 이용"], cons: ["제한된 품질", "높은 가격"],
+                website: "https://soundraw.io", released: "2020-01"
+            },
+
+            // AI Coding Tools
+            {
+                id: 35, name: "GitHub Copilot", emoji: "🛠️", category: "coding", rating: 4.7, users: "5M+",
+                price: "월 $10-19", priceType: "paid", discount: "학생 무료",
+                description: "GitHub과 OpenAI가 개발한 최고의 AI 코딩 어시스턴트입니다.",
+                features: ["코드 자동완성", "다양한 언어", "IDE 통합", "설명"], pros: ["뛰어난 품질", "IDE 지원"], cons: ["구독 필요", "가끔 부정확"],
+                website: "https://github.com/features/copilot", released: "2021-06"
+            },
+            {
+                id: 36, name: "Cursor", emoji: "🖱️", category: "coding", rating: 4.6, users: "2M+",
+                price: "무료/월 $20", priceType: "freemium", discount: "Pro 첫달 무료",
+                description: "AI 기반 코드 에디터로 자연어로 코딩할 수 있습니다.",
+                features: ["AI 에디터", "자연어", "리팩토링", "버그 수정"], pros: ["혁신적 UI", "자연어 지원"], cons: ["새로운 도구", "학습 곡선"],
+                website: "https://cursor.sh", released: "2023-03"
+            },
+            {
+                id: 37, name: "Replit", emoji: "🔥", category: "coding", rating: 4.4, users: "20M+",
+                price: "무료/월 $7-20", priceType: "freemium", discount: "학생 할인 50%",
+                description: "브라우저 기반 개발 환경으로 AI 코딩 지원을 제공합니다.",
+                features: ["온라인 IDE", "AI 코딩", "협업", "배포"], pros: ["브라우저 기반", "쉬운 협업"], cons: ["제한된 성능", "인터넷 의존"],
+                website: "https://replit.com", released: "2016-01"
+            },
+            {
+                id: 38, name: "Tabnine", emoji: "🎯", category: "coding", rating: 4.3, users: "1M+",
+                price: "무료/월 $12-39", priceType: "freemium", discount: "팀 할인 20%",
+                description: "프라이버시 중심의 AI 코드 자동완성 도구입니다.",
+                features: ["자동완성", "프라이버시", "온프레미스", "팀 학습"], pros: ["강력한 프라이버시", "온프레미스"], cons: ["높은 가격", "복잡한 설정"],
+                website: "https://tabnine.com", released: "2012-01"
+            },
+            {
+                id: 39, name: "Codeium", emoji: "⚡", category: "coding", rating: 4.2, users: "500K+",
+                price: "무료/월 $12", priceType: "freemium", discount: "개인 사용자 무료",
+                description: "무료로 사용할 수 있는 AI 코딩 어시스턴트입니다.",
+                features: ["무료 사용", "다양한 IDE", "채팅", "검색"], pros: ["완전 무료", "좋은 성능"], cons: ["상대적으로 새로움", "제한된 기능"],
+                website: "https://codeium.com", released: "2022-01"
+            },
+            {
+                id: 40, name: "CodeWhisperer", emoji: "💭", category: "coding", rating: 4.1, users: "1M+",
+                price: "무료/월 $19", priceType: "freemium", discount: "AWS 크레딧 포함",
+                description: "Amazon의 AI 코딩 어시스턴트로 AWS 서비스에 특화되어 있습니다.",
+                features: ["AWS 특화", "보안 스캔", "참조 추적", "다양한 언어"], pros: ["AWS 통합", "보안 기능"], cons: ["AWS 중심", "제한된 범용성"],
+                website: "https://aws.amazon.com/codewhisperer", released: "2022-06"
+            },
+            {
+                id: 41, name: "Continue", emoji: "➡️", category: "coding", rating: 4.0, users: "100K+",
+                price: "무료", priceType: "free", discount: "오픈소스 무료",
+                description: "오픈소스 AI 코딩 어시스턴트로 다양한 모델을 지원합니다.",
+                features: ["오픈소스", "다양한 모델", "IDE 통합", "커스터마이징"], pros: ["완전 무료", "오픈소스"], cons: ["설정 복잡", "기술적 지식 필요"],
+                website: "https://continue.dev", released: "2023-01"
+            },
+            {
+                id: 42, name: "Sourcegraph Cody", emoji: "🔍", category: "coding", rating: 3.9, users: "300K+",
+                price: "무료/월 $9", priceType: "freemium", discount: "오픈소스 무료",
+                description: "코드베이스 이해에 특화된 AI 어시스턴트입니다.",
+                features: ["코드베이스 이해", "검색", "설명", "리팩토링"], pros: ["코드베이스 특화", "검색 강력"], cons: ["제한된 생성", "복잡한 설정"],
+                website: "https://sourcegraph.com/cody", released: "2023-05"
+            },
+
+            // AI Writing Tools
+            {
+                id: 43, name: "Jasper", emoji: "✍️", category: "writing", rating: 4.5, users: "1M+",
+                price: "월 $39-125", priceType: "paid", discount: "7일 무료 체험",
+                description: "마케팅과 비즈니스 글쓰기에 특화된 프리미엄 AI 도구입니다.",
+                features: ["마케팅 카피", "브랜드 보이스", "템플릿", "SEO"], pros: ["마케팅 특화", "브랜드 일관성"], cons: ["높은 가격", "영어 중심"],
+                website: "https://jasper.ai", released: "2021-01"
+            },
+            {
+                id: 44, name: "Copy.ai", emoji: "📝", category: "writing", rating: 4.3, users: "5M+",
+                price: "무료/월 $36-186", priceType: "freemium", discount: "첫달 50% 할인",
+                description: "마케팅 카피와 콘텐츠 작성을 위한 AI 도구입니다.",
+                features: ["카피라이팅", "이메일", "소셜미디어", "블로그"], pros: ["다양한 템플릿", "사용 쉬움"], cons: ["제한된 창작성", "반복적"],
+                website: "https://copy.ai", released: "2020-10"
+            },
+            {
+                id: 45, name: "Writesonic", emoji: "🚀", category: "writing", rating: 4.2, users: "5M+",
+                price: "무료/월 $13-500", priceType: "freemium", discount: "연간 결제 33% 할인",
+                description: "다양한 글쓰기 작업을 지원하는 종합 AI 도구입니다.",
+                features: ["아티클", "광고", "이메일", "챗봇"], pros: ["다양한 기능", "합리적 가격"], cons: ["품질 편차", "제한된 언어"],
+                website: "https://writesonic.com", released: "2020-10"
+            },
+            {
+                id: 46, name: "QuillBot", emoji: "🪶", category: "writing", rating: 4.4, users: "30M+",
+                price: "무료/월 $8.33-19.95", priceType: "freemium", discount: "학생 할인 50%",
+                description: "텍스트 재작성과 문법 검사에 특화된 AI 도구입니다.",
+                features: ["패러프레이징", "문법 검사", "요약", "인용"], pros: ["뛰어난 재작성", "학술 지원"], cons: ["제한된 창작", "영어 중심"],
+                website: "https://quillbot.com", released: "2017-01"
+            },
+            {
+                id: 47, name: "Grammarly", emoji: "✅", category: "writing", rating: 4.6, users: "30M+",
+                price: "무료/월 $12-15", priceType: "freemium", discount: "연간 결제 40% 할인",
+                description: "AI 기반 문법 검사와 글쓰기 개선의 표준입니다.",
+                features: ["문법 검사", "스타일", "표절 검사", "톤"], pros: ["정확한 검사", "광범위한 지원"], cons: ["영어 중심", "과도한 제안"],
+                website: "https://grammarly.com", released: "2009-07"
+            },
+            {
+                id: 48, name: "Rytr", emoji: "📄", category: "writing", rating: 4.1, users: "7M+",
+                price: "무료/월 $9-29", priceType: "freemium", discount: "연간 결제 30% 할인",
+                description: "저렴한 가격으로 다양한 글쓰기를 지원하는 AI 도구입니다.",
+                features: ["콘텐츠 생성", "이메일", "광고", "블로그"], pros: ["저렴한 가격", "사용 쉬움"], cons: ["제한된 품질", "기본적 기능"],
+                website: "https://rytr.me", released: "2021-04"
+            },
+            {
+                id: 49, name: "Notion AI", emoji: "📋", category: "writing", rating: 4.4, users: "30M+",
+                price: "월 $8-15", priceType: "paid", discount: "Notion 플랜 포함",
+                description: "Notion에 통합된 AI로 문서 작성과 정리를 지원합니다.",
+                features: ["문서 작성", "요약", "번역", "브레인스토밍"], pros: ["Notion 통합", "협업"], cons: ["Notion 의존", "제한된 AI"],
+                website: "https://notion.so", released: "2023-02"
+            },
+
+            // AI Design Tools
+            {
+                id: 50, name: "Figma AI", emoji: "🎨", category: "design", rating: 4.5, users: "40M+",
+                price: "무료/월 $12-45", priceType: "freemium", discount: "학생 무료",
+                description: "협업 디자인 도구에 AI 기능이 추가된 전문 플랫폼입니다.",
+                features: ["UI/UX", "협업", "프로토타입", "AI 어시스턴트"], pros: ["전문적", "협업 강력"], cons: ["학습 곡선", "복잡한 UI"],
+                website: "https://figma.com", released: "2016-01"
+            },
+            {
+                id: 51, name: "Framer AI", emoji: "⚡", category: "design", rating: 4.3, users: "1M+",
+                price: "무료/월 $5-30", priceType: "freemium", discount: "연간 결제 20% 할인",
+                description: "AI 기반 웹사이트 생성과 디자인 도구입니다.",
+                features: ["웹사이트 생성", "반응형", "애니메이션", "CMS"], pros: ["빠른 생성", "반응형"], cons: ["제한된 커스터마이징", "템플릿 의존"],
+                website: "https://framer.com", released: "2014-01"
+            },
+            {
+                id: 52, name: "Uizard", emoji: "✨", category: "design", rating: 4.1, users: "500K+",
+                price: "무료/월 $12-39", priceType: "freemium", discount: "Pro 첫달 무료",
+                description: "스케치를 디지털 디자인으로 변환하는 AI 도구입니다.",
+                features: ["스케치-디자인", "와이어프레임", "프로토타입", "협업"], pros: ["혁신적 변환", "빠른 프로토타입"], cons: ["제한된 정확도", "기본적 디자인"],
+                website: "https://uizard.io", released: "2018-01"
+            },
+            {
+                id: 53, name: "Tome", emoji: "📖", category: "design", rating: 4.1, users: "2M+",
+                price: "무료/월 $8-16", priceType: "freemium", discount: "Education 무료",
+                description: "AI로 프레젠테이션을 자동 생성하는 도구입니다.",
+                features: ["AI 프레젠테이션", "이미지 생성", "레이아웃", "협업"], pros: ["빠른 생성", "아름다운 디자인"], cons: ["제한된 커스터마이징", "템플릿 의존"],
+                website: "https://tome.app", released: "2022-05"
+            },
+            {
+                id: 54, name: "Gamma", emoji: "📊", category: "design", rating: 4.2, users: "3M+",
+                price: "무료/월 $8-16", priceType: "freemium", discount: "연간 결제 30% 할인",
+                description: "AI 기반 프레젠테이션과 웹페이지 생성 도구입니다.",
+                features: ["프레젠테이션", "웹페이지", "문서", "애니메이션"], pros: ["다양한 형식", "반응형"], cons: ["제한된 무료", "템플릿 제한"],
+                website: "https://gamma.app", released: "2022-08"
+            },
+            {
+                id: 55, name: "Beautiful.AI", emoji: "💎", category: "design", rating: 4.0, users: "1M+",
+                price: "무료/월 $12-40", priceType: "freemium", discount: "팀 할인 25%",
+                description: "AI 기반 스마트 슬라이드 디자인 도구입니다.",
+                features: ["스마트 슬라이드", "자동 레이아웃", "템플릿", "협업"], pros: ["자동 레이아웃", "전문적 디자인"], cons: ["제한된 자유도", "높은 가격"],
+                website: "https://beautiful.ai", released: "2017-01"
+            }
+        ];
+
+        // AI News Data
+        const aiNews = [
+            {
+                title: "ChatGPT-4o 새로운 멀티모달 기능 대폭 업데이트",
+                summary: "OpenAI가 GPT-4o 모델에 향상된 이미지 이해와 실시간 음성 대화 기능을 추가했습니다.",
+                date: "2024-01-15", category: "업데이트"
+            },
+            {
+                title: "Midjourney V6 베타 버전 공식 출시",
+                summary: "더욱 사실적이고 일관된 이미지 생성이 가능한 Midjourney V6가 베타로 출시되었습니다.",
+                date: "2024-01-12", category: "출시"
+            },
+            {
+                title: "Suno AI, 4분 길이 음악 생성 기능 추가",
+                summary: "Suno가 기존 2분에서 4분까지 연장된 고품질 음악 생성 기능을 발표했습니다.",
+                date: "2024-01-10", category: "기능"
+            },
+            {
+                title: "Google Gemini 2.0 Flash 모델 성능 대폭 향상",
+                summary: "Google이 Gemini 2.0 Flash를 출시하며 처리 속도와 추론 능력이 크게 개선되었습니다.",
+                date: "2024-01-08", category: "출시"
+            },
+            {
+                title: "Runway Gen-3 Alpha, 비디오 생성 품질 혁신",
+                summary: "Runway의 새로운 Gen-3 Alpha 모델이 영화급 비디오 생성 품질을 선보였습니다.",
+                date: "2024-01-06", category: "기술"
+            },
+            {
+                title: "GitHub Copilot, 새로운 코드 리뷰 기능 추가",
+                summary: "GitHub Copilot에 AI 기반 코드 리뷰와 보안 취약점 분석 기능이 추가되었습니다.",
+                date: "2024-01-05", category: "기능"
+            },
+            {
+                title: "Adobe Firefly, 상업적 안전성 보장 이미지 생성",
+                summary: "Adobe가 저작권 문제 없는 완전히 안전한 AI 이미지 생성 기술을 발표했습니다.",
+                date: "2024-01-03", category: "기술"
+            },
+            {
+                title: "Claude 3 Opus, 한국어 성능 대폭 강화",
+                summary: "Anthropic의 Claude 3 Opus가 한국어 이해와 생성 능력을 크게 향상시켰습니다.",
+                date: "2024-01-02", category: "업데이트"
+            },
+            {
+                title: "Stable Diffusion 3.0, 오픈소스 커뮤니티 공개",
+                summary: "Stability AI가 더욱 향상된 Stable Diffusion 3.0을 오픈소스로 공개했습니다.",
+                date: "2023-12-28", category: "오픈소스"
+            },
+            {
+                title: "Perplexity AI, 실시간 검색 정확도 99% 달성",
+                summary: "Perplexity가 실시간 정보 검색에서 99%의 정확도를 달성했다고 발표했습니다.",
+                date: "2023-12-25", category: "성과"
+            }
+        ];
+
+        // Initialize the application
+        let currentCategory = 'all';
+        let currentSearch = '';
+        let filteredTools = [...aiTools];
+
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const toolsGrid = document.getElementById('toolsGrid');
+        const noResults = document.getElementById('noResults');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const priceFilter = document.getElementById('priceFilter');
+        const ratingFilter = document.getElementById('ratingFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const discountFilter = document.getElementById('discountFilter');
+        const rankingsContainer = document.getElementById('rankingsContainer');
+        const newsContainer = document.getElementById('newsContainer');
+
+        // Event Listeners
+        searchInput.addEventListener('input', handleSearch);
+        priceFilter.addEventListener('change', applyFilters);
+        ratingFilter.addEventListener('change', applyFilters);
+        sortFilter.addEventListener('change', applyFilters);
+        discountFilter.addEventListener('change', applyFilters);
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryBtns.forEach(b => b.classList.remove('active', 'bg-purple-500', 'text-white'));
+                btn.classList.add('active', 'bg-purple-500', 'text-white');
+                currentCategory = btn.dataset.category;
+                applyFilters();
+            });
+        });
+
+        // Functions
+        function handleSearch(e) {
+            currentSearch = e.target.value;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            filteredTools = aiTools.filter(tool => {
+                const matchesCategory = currentCategory === 'all' || tool.category === currentCategory;
+                const matchesSearch = tool.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                   tool.description.toLowerCase().includes(currentSearch.toLowerCase());
+                const matchesPrice = priceFilter.value === 'all' || tool.priceType === priceFilter.value;
+                const matchesRating = ratingFilter.value === 'all' || tool.rating >= parseFloat(ratingFilter.value);
+                const matchesDiscount = !discountFilter.checked || tool.discount !== '';
+
+                return matchesCategory && matchesSearch && matchesPrice && matchesRating && matchesDiscount;
+            });
+
+            // Sort tools
+            const sortBy = sortFilter.value;
+            filteredTools.sort((a, b) => {
+                switch(sortBy) {
+                    case 'rating': return b.rating - a.rating;
+                    case 'users': return parseInt(b.users) - parseInt(a.users);
+                    case 'price': return a.price.localeCompare(b.price);
+                    case 'name': return a.name.localeCompare(b.name);
+                    default: return b.rating - a.rating;
+                }
+            });
+
+            renderTools();
+        }
+
+        function renderTools() {
+            if (filteredTools.length === 0) {
+                toolsGrid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            toolsGrid.classList.remove('hidden');
+            noResults.classList.add('hidden');
+
+            toolsGrid.innerHTML = filteredTools.map(tool => `
+                <div class="tool-card glass-effect rounded-xl p-6 transition-all duration-300 hover:scale-105 cursor-pointer animate-fade-in" onclick="showToolDetails(${tool.id})">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-3xl">${tool.emoji}</span>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">${tool.name}</h3>
+                                <span class="text-sm px-2 py-1 bg-purple-100 text-purple-600 rounded-full">${getCategoryName(tool.category)}</span>
+                            </div>
+                        </div>
+                        ${tool.discount ? `<span class="discount-badge text-xs px-2 py-1 rounded-full text-white">🔥 할인</span>` : ''}
+                    </div>
+                    
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">${tool.description}</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-1">
+                            ${generateStars(tool.rating)}
+                            <span class="text-sm font-medium text-gray-700">${tool.rating}</span>
+                        </div>
+                        <span class="text-sm text-gray-500"><i class="fas fa-users mr-1"></i>${tool.users}</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-purple-600">${tool.price}</span>
+                        <button class="bg-purple-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-600 transition-colors">
+                            자세히 보기
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star star-rating"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt star-rating"></i>';
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                stars += '<i class="far fa-star star-rating"></i>';
+            }
+            
+            return stars;
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'chat': 'AI 채팅',
+                'image': '이미지',
+                'video': '동영상',
+                'music': '음악',
+                'coding': '코딩',
+                'writing': '글쓰기',
+                'design': '디자인'
+            };
+            return names[category] || category;
+        }
+
+        function showToolDetails(toolId) {
+            const tool = aiTools.find(t => t.id === toolId);
+            const modal = document.getElementById('toolModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <div class="text-center mb-6">
+                    <span class="text-6xl mb-4 block">${tool.emoji}</span>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">${tool.name}</h2>
+                    <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm">${getCategoryName(tool.category)}</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2"><i class="fas fa-info-circle mr-2"></i>기본 정보</h3>
+                            <p class="text-gray-600">${tool.description}</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2"><i class="fas fa-dollar-sign mr-2"></i>가격</h3>
+                            <p class="text-lg font-bold text-purple-600">${tool.price}</p>
+                            ${tool.discount ? `<p class="text-sm text-red-500">🔥 ${tool.discount}</p>` : ''}
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2"><i class="fas fa-star mr-2"></i>평점 및 사용자</h3>
+                            <div class="flex items-center space-x-2 mb-1">
+                                ${generateStars(tool.rating)}
+                                <span class="font-medium">${tool.rating}/5</span>
+                            </div>
+                            <p class="text-sm text-gray-500">${tool.users} 사용자</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2"><i class="fas fa-cogs mr-2"></i>주요 기능</h3>
+                            <div class="flex flex-wrap gap-2">
+                                ${tool.features.map(feature => `<span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-sm">${feature}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2"><i class="fas fa-thumbs-up mr-2 text-green-500"></i>장점</h3>
+                            <ul class="space-y-1">
+                                ${tool.pros.map(pro => `<li class="text-sm text-gray-600">• ${pro}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2"><i class="fas fa-thumbs-down mr-2 text-red-500"></i>단점</h3>
+                            <ul class="space-y-1">
+                                ${tool.cons.map(con => `<li class="text-sm text-gray-600">• ${con}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center pt-6 border-t">
+                    <a href="${tool.website}" target="_blank" class="bg-purple-500 text-white px-8 py-3 rounded-lg hover:bg-purple-600 transition-colors inline-block">
+                        <i class="fas fa-external-link-alt mr-2"></i>공식 웹사이트 방문
+                    </a>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('toolModal').classList.remove('show');
+        }
+
+        function renderRankings() {
+            const topTools = aiTools.sort((a, b) => b.rating - a.rating).slice(0, 5);
+            
+            rankingsContainer.innerHTML = topTools.map((tool, index) => `
+                <div class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                        ${index + 1}
+                    </div>
+                    <span class="text-lg">${tool.emoji}</span>
+                    <div class="flex-1">
+                        <div class="font-medium text-gray-900">${tool.name}</div>
+                        <div class="text-sm text-gray-500">${tool.rating}★</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderNews() {
+            newsContainer.innerHTML = aiNews.slice(0, 5).map(news => `
+                <div class="p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded">${news.category}</span>
+                        <span class="text-xs text-gray-400">${news.date}</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1">${news.title}</h4>
+                    <p class="text-xs text-gray-600 line-clamp-2">${news.summary}</p>
+                </div>
+            `).join('');
+        }
+
+        function initCharts() {
+            // Category distribution chart
+            const categoryData = {};
+            aiTools.forEach(tool => {
+                categoryData[tool.category] = (categoryData[tool.category] || 0) + 1;
+            });
+
+            new Chart(document.getElementById('categoryChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categoryData).map(getCategoryName),
+                    datasets: [{
+                        data: Object.values(categoryData),
+                        backgroundColor: [
+                            '#667eea', '#764ba2', '#f093fb', '#f5576c',
+                            '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { usePointStyle: true, padding: 15, font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            // Performance charts for each category
+            const categories = ['chat', 'image', 'video', 'music'];
+            const chartIds = ['chatChart', 'imageChart', 'videoChart', 'musicChart'];
+
+            categories.forEach((category, index) => {
+                const categoryTools = aiTools.filter(tool => tool.category === category).slice(0, 3);
+                
+                new Chart(document.getElementById(chartIds[index]).getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: categoryTools.map(tool => tool.name),
+                        datasets: [{
+                            data: categoryTools.map(tool => tool.rating),
+                            backgroundColor: ['#667eea', '#764ba2', '#f093fb'],
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { 
+                                beginAtZero: true, 
+                                max: 5,
+                                ticks: { font: { size: 10 } }
+                            },
+                            x: { 
+                                ticks: { 
+                                    font: { size: 8 },
+                                    maxRotation: 45
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            applyFilters();
+            renderRankings();
+            renderNews();
+            initCharts();
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('toolModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"95a3c901df5ffcbe","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.6.2","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDvVGmQ20Vpjb5KZUmpaBoIRr87fa9rA2SDzkzWpx5%2FYwo7tuYQ2Jk1VtHEM2lz6Y8ZmoeSXDUM1kbLQABizVXifKyP%2FSyd6UOnuCwE8MXMBV8kCEjzFFlBecmObQ0Z%2FtWbBoXlqWH9l%2BfKIxASOn6LplUy%2FuJgb89idanUehuZymWL0SAGfWIp%2FumlNh%2F9EoJKV4eclaVlBIhw%2BKPA8IGGEsxVXIzXS5YWYqPwTrWSuonRAzEgMPt%2F0o9hLkCwJwMocr4RuOBYDLu4YjWFxNMlQ%2BH0jm7YPYWJmTV8N6EEKLS%2FfF0BmB9Ccqvwt3vlAnCBi4HbCEi4DZl5OTHSc3yRW8z8Gl3aYE0B0roQTYHazOtfi78oKbmw%2B6p93WWaZ12s66WLitWgr7A5wk1aXcn6tUqHQsVGoVOWivM7%2F1RxAgLCpf3PwsnpRNdSEHrvb6PHuLYTvEvva%2FeKLcSV6T8SzIQ0xiVjIN0Jj2vSATfSGNuCI%2FGehjTkTybKinFAvF5I9YentgcMAPNW1C0BKQW74%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDvVGmQ20Vpjb5KZUmpaBoIRr87fa9rA2SDzkzWpx5/Ywo7tuYQ2Jk1VtHEM2lz6Y8ZmoeSXDUM1kbLQABizVXifKyP/Syd6UOnuCwE8MXMBV8kCEjzFFlBecmObQ0Z/tWbBoXlqWH9l+fKIxASOn6LplUy/uJgb89idanUehuZymWL0SAGfWIp/umlNh/9EoJKV4eclaVlBIhw+KPA8IGGEsxVXIzXS5YWYqPwTrWSuonRAzEgMPt/0o9hLkCwJwMocr4RuOBYDLu4YjWFxNMlQ+H0jm7YPYWJmTV8N6EEKLS/fF0BmB9Ccqvwt3vlAnCBi4HbCEi4DZl5OTHSc3yRW8z8Gl3aYE0B0roQTYHazOtfi78oKbmw+6p93WWaZ12s66WLitWgr7A5wk1aXcn6tUqHQsVGoVOWivM7/1RxAgLCpf3PwsnpRNdSEHrvb6PHuLYTvEvva/eKLcSV6T8SzIQ0xiVjIN0Jj2vSATfSGNuCI/GehjTkTybKinFAvF5I9YentgcMAPNW1C0BKQW74=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
