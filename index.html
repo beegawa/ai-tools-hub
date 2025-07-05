@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 도구 허브 - 최고의 AI 도구들을 한 곳에서</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .tools-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .tool-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .tool-category {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .tool-popularity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .popularity-bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .popularity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .popularity-score {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .ranking-section,
+        .news-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank-number {
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .rank-info {
+            flex: 1;
+        }
+
+        .rank-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .rank-score {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .news-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .news-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                justify-content: flex-start;
+            }
+
+            .filter-btn {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI 도구 허브</h1>
+            <p class="subtitle">최고의 AI 도구들을 한 곳에서 만나보세요</p>
+        </header>
+
+        <div class="search-section">
+            <input type="text" class="search-box" placeholder="AI 도구를 검색해보세요..." id="searchInput">
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">전체</button>
+                <button class="filter-btn" data-category="채팅">AI 채팅</button>
+                <button class="filter-btn" data-category="이미지">AI 이미지</button>
+                <button class="filter-btn" data-category="동영상">AI 동영상</button>
+                <button class="filter-btn" data-category="음악">AI 음악</button>
+                <button class="filter-btn" data-category="코딩">AI 코딩</button>
+                <button class="filter-btn" data-category="글쓰기">AI 글쓰기</button>
+                <button class="filter-btn" data-category="디자인">AI 디자인</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="tools-section">
+                <h2 class="section-title">🔥 인기 AI 도구</h2>
+                <div class="tools-grid" id="toolsGrid">
+                    <!-- Tools will be populated by JavaScript -->
+                </div>
+                <div class="no-results hidden" id="noResults">
+                    검색 결과가 없습니다. 다른 키워드로 시도해보세요.
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="ranking-section">
+                    <h3 class="section-title">📊 AI 성능 순위</h3>
+                    <div id="rankingList">
+                        <!-- Rankings will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="news-section">
+                    <h3 class="section-title">📰 최신 AI 뉴스</h3>
+                    <div class="news-item">
+                        <div class="news-title">ChatGPT-4o 새로운 기능 업데이트</div>
+                        <div class="news-date">2024.01.15</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Midjourney V6 베타 버전 출시</div>
+                        <div class="news-date">2024.01.12</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Suno AI 음악 생성 품질 대폭 향상</div>
+                        <div class="news-date">2024.01.10</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Claude 3 Opus 한국어 지원 강화</div>
+                        <div class="news-date">2024.01.08</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">GitHub Copilot 새로운 코딩 기능 추가</div>
+                        <div class="news-date">2024.01.05</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AI Tools Data
+        const aiTools = [
+            { name: 'ChatGPT', category: 'AI 채팅', popularity: 95 },
+            { name: 'Claude', category: 'AI 채팅', popularity: 92 },
+            { name: 'Midjourney', category: 'AI 이미지', popularity: 90 },
+            { name: 'Suno', category: 'AI 음악', popularity: 88 },
+            { name: 'Runway', category: 'AI 동영상', popularity: 87 },
+            { name: 'Canva AI', category: 'AI 디자인', popularity: 85 },
+            { name: 'GitHub Copilot', category: 'AI 코딩', popularity: 84 },
+            { name: 'Luma Dream Machine', category: 'AI 동영상', popularity: 83 },
+            { name: 'Leonardo AI', category: 'AI 이미지', popularity: 82 },
+            { name: 'Udio', category: 'AI 음악', popularity: 81 },
+            { name: 'Cursor', category: 'AI 코딩', popularity: 80 },
+            { name: 'Ideogram', category: 'AI 이미지', popularity: 79 },
+            { name: 'Pika Labs', category: 'AI 동영상', popularity: 78 },
+            { name: 'Jasper', category: 'AI 글쓰기', popularity: 77 },
+            { name: 'Flux', category: 'AI 이미지', popularity: 76 },
+            { name: 'QuillBot', category: 'AI 글쓰기', popularity: 75 },
+            { name: 'Replit', category: 'AI 코딩', popularity: 74 },
+            { name: 'Rytr', category: 'AI 글쓰기', popularity: 73 },
+            { name: 'Writesonic', category: 'AI 글쓰기', popularity: 72 },
+            { name: 'Synthesia', category: 'AI 동영상', popularity: 71 }
+        ];
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        // Initialize the page
+        function init() {
+            renderTools();
+            renderRankings();
+            setupEventListeners();
+        }
+
+        // Render tools grid
+        function renderTools() {
+            const toolsGrid = document.getElementById('toolsGrid');
+            const noResults = document.getElementById('noResults');
+
+            let filteredTools = aiTools.filter(tool => {
+                const matchesCategory = currentFilter === 'all' || tool.category === currentFilter;
+                const matchesSearch = tool.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                    tool.category.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filteredTools.length === 0) {
+                toolsGrid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            toolsGrid.classList.remove('hidden');
+            noResults.classList.add('hidden');
+
+            // Sort by popularity
+            filteredTools.sort((a, b) => b.popularity - a.popularity);
+
+            toolsGrid.innerHTML = filteredTools.map(tool => `
+                <div class="tool-card">
+                    <div class="tool-name">${tool.name}</div>
+                    <div class="tool-category">${tool.category}</div>
+                    <div class="tool-popularity">
+                        <div class="popularity-bar">
+                            <div class="popularity-fill" style="width: ${tool.popularity}%"></div>
+                        </div>
+                        <div class="popularity-score">${tool.popularity}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render rankings
+        function renderRankings() {
+            const rankingList = document.getElementById('rankingList');
+            const topTools = [...aiTools].sort((a, b) => b.popularity - a.popularity).slice(0, 5);
+
+            rankingList.innerHTML = topTools.map((tool, index) => `
+                <div class="ranking-item">
+                    <div class="rank-number">${index + 1}</div>
+                    <div class="rank-info">
+                        <div class="rank-name">${tool.name}</div>
+                        <div class="rank-score">인기도 ${tool.popularity}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value;
+                renderTools();
+            });
+
+            // Filter functionality
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+
+                    currentFilter = btn.dataset.category;
+                    renderTools();
+                });
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
