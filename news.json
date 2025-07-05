@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "title": "OpenAI, GPT-4 Turbo 모델 공식 출시",
+    "content": "OpenAI가 더욱 향상된 성능과 긴 컨텍스트 윈도우를 제공하는 GPT-4 Turbo 모델을 공식 출시했습니다. 새로운 모델은 128,000 토큰의 컨텍스트 길이를 지원하며, 더 정확하고 일관된 응답을 제공합니다.",
+    "date": "2024-01-25T09:00:00Z",
+    "link": "https://openai.com/blog/gpt-4-turbo"
+  },
+  {
+    "id": "2",
+    "title": "구글, Gemini Pro 1.5 모델 발표",
+    "content": "구글이 차세대 AI 모델인 Gemini Pro 1.5를 발표했습니다. 이 모델은 멀티모달 기능이 크게 향상되어 텍스트, 이미지, 비디오, 오디오를 동시에 처리할 수 있습니다.",
+    "date": "2024-01-24T14:30:00Z",
+    "link": "https://blog.google/technology/ai/google-gemini-pro-1-5/"
+  },
+  {
+    "id": "3",
+    "title": "AI 이미지 생성 도구 시장, 2024년 급성장 전망",
+    "content": "시장 조사 기관에 따르면, AI 이미지 생성 도구 시장이 2024년에 전년 대비 300% 성장할 것으로 예상된다고 발표했습니다. Midjourney, DALL-E, Stable Diffusion 등이 시장을 주도하고 있습니다.",
+    "date": "2024-01-23T11:15:00Z",
+    "link": "https://example.com/ai-image-market-growth"
+  },
+  {
+    "id": "4",
+    "title": "마이크로소프트, Copilot Pro 서비스 확대",
+    "content": "마이크로소프트가 Copilot Pro 서비스를 Office 365 전체 제품군으로 확대한다고 발표했습니다. Word, Excel, PowerPoint, Outlook 등에서 AI 기능을 활용할 수 있게 됩니다.",
+    "date": "2024-01-22T16:45:00Z",
+    "link": "https://blogs.microsoft.com/blog/copilot-pro-expansion"
+  },
+  {
+    "id": "5",
+    "title": "AI 윤리 가이드라인, 글로벌 표준화 논의 시작",
+    "content": "주요 AI 기업들과 정부 기관들이 AI 개발과 사용에 대한 글로벌 윤리 가이드라인 표준화를 위한 논의를 시작했습니다. 안전하고 책임감 있는 AI 발전을 위한 협력 체계 구축이 목표입니다.",
+    "date": "2024-01-21T08:20:00Z",
+    "link": "https://example.com/ai-ethics-guidelines"
+  },
+  {
+    "id": "6",
+    "title": "AI 코딩 도구, 개발자 생산성 40% 향상",
+    "content": "최근 연구에 따르면 GitHub Copilot과 같은 AI 코딩 도구를 사용하는 개발자들의 생산성이 평균 40% 향상된 것으로 나타났습니다. 특히 반복적인 코드 작성과 디버깅에서 큰 효과를 보였습니다.",
+    "date": "2024-01-20T12:30:00Z",
+    "link": "https://example.com/ai-coding-productivity-study"
+  }
+]

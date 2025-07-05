@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - AI Tools Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Tools Hub - 관리자</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="index.html" class="nav-link">메인으로</a>
+                    <div class="nav-auth">
+                        <span id="adminName"></span>
+                        <button id="logoutBtn" class="btn btn-outline">로그아웃</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <ul class="admin-menu">
+                <li><a href="#dashboard" class="menu-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> 대시보드
+                </a></li>
+                <li><a href="#tools" class="menu-item" data-section="tools">
+                    <i class="fas fa-tools"></i> 도구 관리
+                </a></li>
+                <li><a href="#users" class="menu-item" data-section="users">
+                    <i class="fas fa-users"></i> 사용자 관리
+                </a></li>
+                <li><a href="#reviews" class="menu-item" data-section="reviews">
+                    <i class="fas fa-star"></i> 리뷰 관리
+                </a></li>
+                <li><a href="#news" class="menu-item" data-section="news">
+                    <i class="fas fa-newspaper"></i> 뉴스 관리
+                </a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section active">
+                <h2>대시보드</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-tools"></i>
+                        <div class="stat-info">
+                            <h3 id="totalTools">0</h3>
+                            <p>총 도구 수</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>총 사용자 수</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <div class="stat-info">
+                            <h3 id="totalReviews">0</h3>
+                            <p>총 리뷰 수</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-newspaper"></i>
+                        <div class="stat-info">
+                            <h3 id="totalNews">0</h3>
+                            <p>총 뉴스 수</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools Management Section -->
+            <section id="tools" class="admin-section">
+                <div class="section-header">
+                    <h2>도구 관리</h2>
+                    <button id="addToolBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 새 도구 추가
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="toolsTable" class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>카테고리</th>
+                                <th>가격</th>
+                                <th>평점</th>
+                                <th>리뷰 수</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Tools will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Users Management Section -->
+            <section id="users" class="admin-section">
+                <h2>사용자 관리</h2>
+                <div class="table-container">
+                    <table id="usersTable" class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>권한</th>
+                                <th>가입일</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reviews Management Section -->
+            <section id="reviews" class="admin-section">
+                <h2>리뷰 관리</h2>
+                <div id="reviewsList" class="reviews-list">
+                    <!-- Reviews will be loaded here -->
+                </div>
+            </section>
+
+            <!-- News Management Section -->
+            <section id="news" class="admin-section">
+                <h2>뉴스 관리</h2>
+                <div id="newsList" class="news-list">
+                    <!-- News will be loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add/Edit Tool Modal -->
+    <div id="toolFormModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <h2 id="toolFormTitle">도구 추가</h2>
+            <form id="toolForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="toolName">도구 이름:</label>
+                        <input type="text" id="toolName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="toolCategory">카테고리:</label>
+                        <select id="toolCategory" required>
+                            <option value="text">텍스트 생성</option>
+                            <option value="image">이미지 생성</option>
+                            <option value="video">비디오 편집</option>
+                            <option value="audio">오디오 처리</option>
+                            <option value="code">코드 생성</option>
+                            <option value="productivity">생산성</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="toolDescription">설명:</label>
+                    <textarea id="toolDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="toolPrice">가격:</label>
+                        <input type="text" id="toolPrice" placeholder="무료, $9.99/월 등">
+                    </div>
+                    <div class="form-group">
+                        <label for="toolWebsite">웹사이트:</label>
+                        <input type="url" id="toolWebsite">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="toolImage">이미지 URL:</label>
+                    <input type="url" id="toolImage">
+                </div>
+                <div class="form-group">
+                    <label for="toolFeatures">주요 기능 (쉼표로 구분):</label>
+                    <input type="text" id="toolFeatures" placeholder="기능1, 기능2, 기능3">
+                </div>
+                <input type="hidden" id="toolId">
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('toolFormModal')">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

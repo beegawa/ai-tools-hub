@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Hub - 최고의 AI 도구 모음</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Tools Hub</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link">홈</a>
+                    <a href="#tools" class="nav-link">도구</a>
+                    <a href="#news" class="nav-link">뉴스</a>
+                    <div class="nav-auth">
+                        <button id="loginBtn" class="btn btn-outline">로그인</button>
+                        <button id="registerBtn" class="btn btn-primary">회원가입</button>
+                        <div id="userMenu" class="user-menu" style="display: none;">
+                            <span id="userName"></span>
+                            <button id="adminBtn" class="btn btn-admin" style="display: none;">관리자</button>
+                            <button id="logoutBtn" class="btn btn-outline">로그아웃</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>최고의 AI 도구를 한 곳에서</h1>
+            <p>생산성을 높이고 창의성을 발휘할 수 있는 최신 AI 도구들을 발견하세요</p>
+            <div class="hero-search">
+                <input type="text" id="heroSearch" placeholder="AI 도구 검색...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="tools-section">
+        <div class="container">
+            <h2>AI 도구 모음</h2>
+
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label>카테고리:</label>
+                    <select id="categoryFilter">
+                        <option value="all">전체</option>
+                        <option value="text">텍스트 생성</option>
+                        <option value="image">이미지 생성</option>
+                        <option value="video">비디오 편집</option>
+                        <option value="audio">오디오 처리</option>
+                        <option value="code">코드 생성</option>
+                        <option value="productivity">생산성</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="searchInput" placeholder="도구 검색...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <!-- Tools Grid -->
+            <div id="toolsGrid" class="tools-grid">
+                <!-- Tools will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="news-section">
+        <div class="container">
+            <h2>AI 뉴스</h2>
+            <div id="newsGrid" class="news-grid">
+                <!-- News will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI Tools Hub</h3>
+                    <p>최고의 AI 도구를 발견하고 활용하세요</p>
+                </div>
+                <div class="footer-section">
+                    <h4>링크</h4>
+                    <ul>
+                        <li><a href="#home">홈</a></li>
+                        <li><a href="#tools">도구</a></li>
+                        <li><a href="#news">뉴스</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>연락처</h4>
+                    <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2e4d41405a4f4d5a6e4f475a4141425d465b4c004d4143">[email&#160;protected]</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Tools Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>로그인</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">이메일:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">비밀번호:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">로그인</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>회원가입</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">이름:</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">이메일:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">비밀번호:</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">회원가입</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tool Detail Modal -->
+    <div id="toolModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <div id="toolDetail">
+                <!-- Tool details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>리뷰 작성</h2>
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label for="reviewRating">평점:</label>
+                    <div class="rating-input">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                    <input type="hidden" id="reviewRating" required>
+                    <input type="hidden" id="reviewToolId">
+                </div>
+                <div class="form-group">
+                    <label for="reviewText">리뷰:</label>
+                    <textarea id="reviewText" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">리뷰 등록</button>
+            </form>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "관리자",
+    "email": "admin@aitoolshub.com",
+    "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "admin",
+    "createdAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "2",
+    "name": "김철수",
+    "email": "user1@example.com",
+    "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "user",
+    "createdAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "3",
+    "name": "이영희",
+    "email": "user2@example.com",
+    "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+    "role": "user",
+    "createdAt": "2024-01-20T14:15:00Z"
+  }
+]
