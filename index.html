@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Hub - 최고의 AI 도구를 한 곳에서</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .ai-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+        }
+        .ai-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .category-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            transition: all 0.2s;
+        }
+        .category-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .category-btn:hover {
+            background: #f3f4f6;
+        }
+        .category-btn.active:hover {
+            background: #5a67d8;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+        }
+        .icon-img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        .visitor-counter {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-robot text-2xl"></i>
+                    <h1 class="text-2xl font-bold">AI 도구 허브 2025</h1>
+                </div>
+                <div class="visitor-counter">
+                    <i class="fas fa-eye mr-2"></i>
+                    오늘 방문자: <span id="todayVisitors">1,247</span>명 | 
+                    총 방문자: <span id="totalVisitors">25,891</span>명
+                </div>
+            </div>
+            <p class="text-lg opacity-90">최고의 AI 도구를 한 곳에서</p>
+            <p class="opacity-80">생산성을 높이고 창의성을 발휘할 수 있는 최신 AI 도구들을 발견하세요</p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Search and Filter Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="mb-6">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="AI 도구 검색..." 
+                           class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Category Buttons -->
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button class="category-btn active" data-category="all">
+                    <i class="fas fa-th-large mr-2"></i>전체 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1" id="totalCount">156</span>
+                </button>
+                <button class="category-btn" data-category="chat">
+                    <i class="fas fa-comments mr-2"></i>AI 채팅 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1">28</span>
+                </button>
+                <button class="category-btn" data-category="image">
+                    <i class="fas fa-image mr-2"></i>이미지 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1">25</span>
+                </button>
+                <button class="category-btn" data-category="video">
+                    <i class="fas fa-video mr-2"></i>동영상 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1">18</span>
+                </button>
+                <button class="category-btn" data-category="music">
+                    <i class="fas fa-music mr-2"></i>음성/음악 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1">15</span>
+                </button>
+                <button class="category-btn" data-category="code">
+                    <i class="fas fa-code mr-2"></i>코딩 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1">12</span>
+                </button>
+                <button class="category-btn" data-category="productivity">
+                    <i class="fas fa-cogs mr-2"></i>생산성 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1">22</span>
+                </button>
+                <button class="category-btn" data-category="education">
+                    <i class="fas fa-graduation-cap mr-2"></i>교육 <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs ml-1">16</span>
+                </button>
+            </div>
+
+            <!-- Filter Options -->
+            <div class="flex flex-wrap gap-4">
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-gray-700">가격:</label>
+                    <select id="priceFilter" class="border border-gray-300 rounded px-3 py-1 text-sm">
+                        <option value="all">전체</option>
+                        <option value="free">무료</option>
+                        <option value="freemium">부분유료</option>
+                        <option value="paid">유료</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-gray-700">평점:</label>
+                    <select id="ratingFilter" class="border border-gray-300 rounded px-3 py-1 text-sm">
+                        <option value="all">전체</option>
+                        <option value="high">4.5+ ⭐</option>
+                        <option value="medium">4.0+ ⭐</option>
+                        <option value="low">3.5+ ⭐</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-gray-700">정렬:</label>
+                    <select id="sortFilter" class="border border-gray-300 rounded px-3 py-1 text-sm">
+                        <option value="popular">인기순</option>
+                        <option value="rating">평점순</option>
+                        <option value="users">사용자수순</option>
+                        <option value="name">이름순</option>
+                    </select>
+                </div>
+                <label class="flex items-center space-x-2">
+                    <input type="checkbox" id="discountFilter" class="rounded">
+                    <span class="text-sm text-gray-700">할인 중만</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- AI Tools Grid -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-fire text-red-500 mr-3"></i>인기 AI 도구
+            </h2>
+            <p class="text-gray-600 mb-6">최신 AI 도구들을 인기순으로 확인하세요</p>
+            
+            <div id="aiToolsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- AI Tools will be inserted here -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button id="loadMoreBtn" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>더 보기
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-3">
+                <!-- AI News Section -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-newspaper text-blue-500 mr-3"></i>최신 AI 뉴스
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-800">ChatGPT O3 추론 모델 출시</h4>
+                            <p class="text-gray-600 text-sm">고급 추론 능력이 대폭 향상된 새로운 모델이 출시되었습니다.</p>
+                            <p class="text-gray-400 text-xs mt-1">2025.07.05</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-800">Suno AI 1200만 사용자 돌파</h4>
+                            <p class="text-gray-600 text-sm">AI 음악 생성 플랫폼 Suno가 주요 이정표를 달성했습니다.</p>
+                            <p class="text-gray-400 text-xs mt-1">2025.07.04</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold text-gray-800">Kling AI vs Runway 성능 비교</h4>
+                            <p class="text-gray-600 text-sm">최신 AI 비디오 생성 도구들의 성능을 비교 분석했습니다.</p>
+                            <p class="text-gray-400 text-xs mt-1">2025.07.03</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1">
+                <!-- AI Performance Rankings -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-trophy text-yellow-500 mr-2"></i>AI 성능 순위
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-yellow-500 font-bold">1</span>
+                            <img src="https://logo.clearbit.com/openai.com" alt="Claude" class="icon-img">
+                            <div>
+                                <p class="font-semibold text-sm">Claude 3.5 Sonnet</p>
+                                <p class="text-xs text-gray-500">전문적 글쓰기 및 분석 특화</p>
+                                <p class="text-xs text-blue-600">4.9★</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-gray-500 font-bold">2</span>
+                            <img src="https://logo.clearbit.com/openai.com" alt="ChatGPT" class="icon-img">
+                            <div>
+                                <p class="font-semibold text-sm">ChatGPT-4o</p>
+                                <p class="text-xs text-gray-500">범용적 성능과 다양한 기능</p>
+                                <p class="text-xs text-blue-600">4.8★</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-orange-500 font-bold">3</span>
+                            <img src="https://logo.clearbit.com/google.com" alt="Gemini" class="icon-img">
+                            <div>
+                                <p class="font-semibold text-sm">Gemini 2.5 Pro</p>
+                                <p class="text-xs text-gray-500">멀티모달 AI 및 Google 연동</p>
+                                <p class="text-xs text-blue-600">4.7★</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-gray-400 font-bold">4</span>
+                            <img src="https://logo.clearbit.com/x.ai" alt="Grok" class="icon-img">
+                            <div>
+                                <p class="font-semibold text-sm">Grok 3</p>
+                                <p class="text-xs text-gray-500">실시간 정보 접근과 위트</p>
+                                <p class="text-xs text-blue-600">4.6★</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-gray-400 font-bold">5</span>
+                            <img src="https://logo.clearbit.com/perplexity.ai" alt="Perplexity" class="icon-img">
+                            <div>
+                                <p class="font-semibold text-sm">Perplexity AI</p>
+                                <p class="text-xs text-gray-500">AI 검색 엔진의 혁신</p>
+                                <p class="text-xs text-blue-600">4.5★</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4">
+                        * 출처: <a href="https://blog-ko.allganize.ai/claude3-vs-gpt-4-vs-gemini/" class="text-blue-600 hover:underline">올거나이즈 블로그</a>, 
+                        <a href="https://www.clien.net/service/board/use/18956983" class="text-blue-600 hover:underline">클리앙</a>
+                    </p>
+                </div>
+
+                <!-- Category Stats -->
+                <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-chart-pie text-green-500 mr-2"></i>카테고리별 도구 수
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm">AI 채팅</span>
+                            <span class="text-sm font-semibold">28</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm">이미지 생성</span>
+                            <span class="text-sm font-semibold">25</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm">생산성</span>
+                            <span class="text-sm font-semibold">22</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm">동영상</span>
+                            <span class="text-sm font-semibold">18</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm">교육</span>
+                            <span class="text-sm font-semibold">16</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm">음성/음악</span>
+                            <span class="text-sm font-semibold">15</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm">코딩</span>
+                            <span class="text-sm font-semibold">12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="aiModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody">
+                <!-- Modal content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">AI Tools Hub</h3>
+                    <p class="text-gray-400 text-sm">최고의 AI 도구를 발견하고 활용하세요</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">링크</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white">홈</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">도구</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">뉴스</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">연락처</h4>
+                    <p class="text-gray-400 text-sm">contact@aitoolshub.com</p>
+                </div>
+                <div>
+                    <div class="flex space-x-2">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">로그인</button>
+                        <button class="border border-gray-600 text-white px-4 py-2 rounded text-sm hover:bg-gray-700">회원가입</button>
+                    </div>
+                    <button class="bg-green-600 text-white px-4 py-2 rounded text-sm mt-2 hover:bg-green-700">리뷰 작성</button>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-4 text-center">
+                <p class="text-gray-400 text-sm">© 2024 AI Tools Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // AI Tools Data - Expanded from Toolify.ai
+        const aiTools = [
+            // AI Chatting (28 tools)
+            {
+                name: "ChatGPT",
+                category: "chat",
+                description: "OpenAI의 대화형 AI로 텍스트 생성, 코딩, 번역 등 다양한 작업 수행. 전 세계적으로 가장 널리 사용되는 AI 도구입니다.",
+                rating: 4.8,
+                users: "350.6M",
+                price: "무료/월 $20",
+                icon: "https://logo.clearbit.com/openai.com",
+                url: "https://chat.openai.com",
+                features: ["GPT-4o 모델", "고급 채팅", "이미지 분석", "코딩 업무", "실시간 웹 접근"],
+                pros: ["무제한 이용", "다양한 서비스", "글쓰기 전문", "높은 퀄리티"],
+                cons: ["기업 무료체험 제한", "한국어 성능 제한"]
+            },
+            {
+                name: "Gemini",
+                category: "chat",
+                description: "Google의 멀티모달 AI로 텍스트, 이미지, 동영상을 통합 처리. Google 서비스와 완벽 연동되어 강력한 성능을 자랑합니다.",
+                rating: 4.7,
+                users: "118.3M",
+                price: "무료/월 $19.99",
+                icon: "https://logo.clearbit.com/google.com",
+                url: "https://gemini.google.com"
+            },
+            {
+                name: "Claude",
+                category: "chat",
+                description: "Anthropic의 안전하고 도움이 되는 AI 어시스턴트로, 자연스러운 대화와 정교한 분석에 특화되어 있습니다.",
+                rating: 4.9,
+                users: "99.7M",
+                price: "무료/월 $20",
+                icon: "https://logo.clearbit.com/anthropic.com",
+                url: "https://claude.ai"
+            },
+            {
+                name: "Perplexity AI",
+                category: "chat",
+                description: "정보 발견 및 질문에 대한 답변을 위해 대형 언어 모델을 사용하는 AI 검색 엔진입니다.",
+                rating: 4.6,
+                users: "126.8M",
+                price: "무료/월 $20",
+                icon: "https://logo.clearbit.com/perplexity.ai",
+                url: "https://perplexity.ai"
+            },
+            {
+                name: "Character.AI",
+                category: "chat",
+                description: "AI 캐릭터가 있는 챗봇 플랫폼으로, 사용자가 챗봇과 대화하고 챗봇을 만들 수 있습니다.",
+                rating: 4.3,
+                users: "50.6M",
+                price: "무료/월 $9.99",
+                icon: "https://character.ai/favicon.ico",
+                url: "https://character.ai"
+            },
+            {
+                name: "Meta AI",
+                category: "chat",
+                description: "Meta의 Llama 모델을 사용하여 작업, 이미지 생성 및 질문에 대한 답변을 위한 AI 비서를 제공합니다.",
+                rating: 4.4,
+                users: "13.6M",
+                price: "무료",
+                icon: "https://logo.clearbit.com/meta.com",
+                url: "https://meta.ai"
+            },
+            {
+                name: "Poe",
+                category: "chat",
+                description: "여러 AI 모델을 한 곳에서 사용할 수 있는 플랫폼으로, ChatGPT, Claude, GPT-4 등을 지원합니다.",
+                rating: 4.2,
+                users: "8.5M",
+                price: "무료/월 $19.99",
+                icon: "https://poe.com/favicon.ico",
+                url: "https://poe.com"
+            },
+            {
+                name: "You.com",
+                category: "chat",
+                description: "AI 기반 검색 엔진과 채팅 기능을 결합한 플랫폼으로, 실시간 정보와 대화가 가능합니다.",
+                rating: 4.1,
+                users: "12.3M",
+                price: "무료/월 $15",
+                icon: "https://you.com/favicon.ico",
+                url: "https://you.com"
+            },
+            {
+                name: "Replika",
+                category: "chat",
+                description: "개인화된 AI 친구로, 사용자와 감정적 연결을 형성하고 개인적인 대화를 나눕니다.",
+                rating: 4.0,
+                users: "6.7M",
+                price: "무료/월 $7.99",
+                icon: "https://replika.ai/favicon.ico",
+                url: "https://replika.ai"
+            },
+            {
+                name: "Jasper Chat",
+                category: "chat",
+                description: "마케팅 및 비즈니스 콘텐츠 생성에 특화된 AI 채팅 도구입니다.",
+                rating: 4.3,
+                users: "3.2M",
+                price: "월 $39",
+                icon: "https://logo.clearbit.com/jasper.ai",
+                url: "https://jasper.ai"
+            },
+            // Continue with more chat tools...
+            {
+                name: "Copy.ai",
+                category: "chat",
+                description: "AI 기반 카피라이팅 및 콘텐츠 생성 도구로, 마케팅 텍스트 작성에 특화되어 있습니다.",
+                rating: 4.2,
+                users: "2.8M",
+                price: "무료/월 $36",
+                icon: "https://logo.clearbit.com/copy.ai",
+                url: "https://copy.ai"
+            },
+            {
+                name: "Writesonic",
+                category: "chat",
+                description: "AI 글쓰기 어시스턴트로, 블로그, 광고, 이메일 등 다양한 콘텐츠를 생성합니다.",
+                rating: 4.1,
+                users: "2.1M",
+                price: "무료/월 $20",
+                icon: "https://logo.clearbit.com/writesonic.com",
+                url: "https://writesonic.com"
+            },
+
+            // Image Generation (25 tools)
+            {
+                name: "Midjourney",
+                category: "image",
+                description: "인간의 상상력을 확장하는 데 초점을 맞춘 AI 아트 생성 연구소입니다.",
+                rating: 4.8,
+                users: "14.7M",
+                price: "월 $10",
+                icon: "https://cdn.discordapp.com/icons/662267976984297473/a_717b0b7b37cca198f68b5893aac63d8d.webp",
+                url: "https://midjourney.com"
+            },
+            {
+                name: "DALL-E 3",
+                category: "image",
+                description: "OpenAI의 최신 이미지 생성 AI로, 텍스트 설명을 통해 고품질 이미지를 생성합니다.",
+                rating: 4.7,
+                users: "45.2M",
+                price: "무료/월 $20",
+                icon: "https://logo.clearbit.com/openai.com",
+                url: "https://labs.openai.com"
+            },
+            {
+                name: "Stable Diffusion",
+                category: "image",
+                description: "오픈소스 AI 이미지 생성기로, 무료로 사용할 수 있으며 커스터마이징이 가능합니다.",
+                rating: 4.6,
+                users: "6.1M",
+                price: "무료",
+                icon: "https://stability.ai/favicon.ico",
+                url: "https://stability.ai"
+            },
+            {
+                name: "Adobe Firefly",
+                category: "image",
+                description: "Adobe의 AI 창작 도구로, 상업적으로 안전한 콘텐츠 생성에 특화되어 있습니다.",
+                rating: 4.5,
+                users: "23.1M",
+                price: "무료/월 $4.99",
+                icon: "https://logo.clearbit.com/adobe.com",
+                url: "https://firefly.adobe.com"
+            },
+            {
+                name: "Canva AI",
+                category: "image",
+                description: "Canva의 AI 기능으로, 디자인 템플릿과 AI 이미지 생성을 결합한 도구입니다.",
+                rating: 4.4,
+                users: "16.9M",
+                price: "무료/월 $14.99",
+                icon: "https://logo.clearbit.com/canva.com",
+                url: "https://canva.com"
+            },
+            {
+                name: "Remove.bg",
+                category: "image",
+                description: "AI 기반의 간편 배경 제거 도구로, 클릭 한 번으로 배경을 제거할 수 있습니다.",
+                rating: 4.6,
+                users: "67.4M",
+                price: "무료/월 $9.99",
+                icon: "https://remove.bg/favicon-32x32.png",
+                url: "https://remove.bg"
+            },
+            {
+                name: "Leonardo AI",
+                category: "image",
+                description: "게임 애셋과 아트워크 생성에 특화된 AI 이미지 생성 플랫폼입니다.",
+                rating: 4.3,
+                users: "5.8M",
+                price: "무료/월 $12",
+                icon: "https://leonardo.ai/favicon.ico",
+                url: "https://leonardo.ai"
+            },
+            {
+                name: "Artbreeder",
+                category: "image",
+                description: "AI를 사용하여 이미지를 합성하고 진화시키는 창의적인 플랫폼입니다.",
+                rating: 4.2,
+                users: "3.4M",
+                price: "무료/월 $8.99",
+                icon: "https://artbreeder.com/favicon.ico",
+                url: "https://artbreeder.com"
+            },
+            {
+                name: "NightCafe",
+                category: "image",
+                description: "다양한 AI 알고리즘을 사용하여 아트를 생성하는 커뮤니티 기반 플랫폼입니다.",
+                rating: 4.1,
+                users: "2.9M",
+                price: "무료/월 $5.99",
+                icon: "https://nightcafe.studio/favicon.ico",
+                url: "https://nightcafe.studio"
+            },
+            {
+                name: "Craiyon",
+                category: "image",
+                description: "이전 DALL-E mini로 알려진 무료 AI 이미지 생성기입니다.",
+                rating: 3.9,
+                users: "8.7M",
+                price: "무료/월 $5",
+                icon: "https://craiyon.com/favicon.ico",
+                url: "https://craiyon.com"
+            },
+
+            // Video Generation (18 tools)
+            {
+                name: "Runway ML",
+                category: "video",
+                description: "AI 비디오 생성 및 편집을 위한 창의적인 도구 모음입니다.",
+                rating: 4.6,
+                users: "2.6M",
+                price: "무료/월 $15",
+                icon: "https://logo.clearbit.com/runwayml.com",
+                url: "https://runwayml.com"
+            },
+            {
+                name: "Kling AI",
+                category: "video",
+                description: "고품질 AI 비디오 생성에 특화된 중국의 AI 플랫폼입니다.",
+                rating: 4.5,
+                users: "1.8M",
+                price: "무료/월 $10",
+                icon: "https://kling.kuaishou.com/favicon.ico",
+                url: "https://kling.kuaishou.com"
+            },
+            {
+                name: "Luma AI",
+                category: "video",
+                description: "3D 및 비디오 생성에 특화된 AI 플랫폼으로, 현실적인 영상을 만들어냅니다.",
+                rating: 4.4,
+                users: "37.8M",
+                price: "무료/월 $29.99",
+                icon: "https://lumalabs.ai/favicon.ico",
+                url: "https://lumalabs.ai"
+            },
+            {
+                name: "Synthesia",
+                category: "video",
+                description: "AI 아바타를 사용하여 프레젠테이션 비디오를 생성하는 플랫폼입니다.",
+                rating: 4.3,
+                users: "6.4M",
+                price: "월 $30",
+                icon: "https://logo.clearbit.com/synthesia.io",
+                url: "https://synthesia.io"
+            },
+            {
+                name: "HeyGen",
+                category: "video",
+                description: "AI 기반 비디오 생성 플랫폼으로, 다국어 아바타 영상을 쉽게 만들 수 있습니다.",
+                rating: 4.2,
+                users: "3.1M",
+                price: "무료/월 $24",
+                icon: "https://heygen.com/favicon.ico",
+                url: "https://heygen.com"
+            },
+            {
+                name: "Pika Labs",
+                category: "video",
+                description: "텍스트에서 비디오를 생성하는 AI 도구로, 창의적인 영상 제작이 가능합니다.",
+                rating: 4.1,
+                users: "1.9M",
+                price: "무료/월 $10",
+                icon: "https://pika.art/favicon.ico",
+                url: "https://pika.art"
+            },
+            {
+                name: "InVideo",
+                category: "video",
+                description: "AI 기반 온라인 비디오 편집기로, 전문적인 비디오를 쉽게 제작할 수 있습니다.",
+                rating: 4.0,
+                users: "11.7M",
+                price: "무료/월 $20",
+                icon: "https://logo.clearbit.com/invideo.io",
+                url: "https://invideo.io"
+            },
+            {
+                name: "Pictory",
+                category: "video",
+                description: "긴 형식의 콘텐츠를 짧은 비디오로 변환하는 AI 도구입니다.",
+                rating: 4.1,
+                users: "2.5M",
+                price: "월 $19",
+                icon: "https://pictory.ai/favicon.ico",
+                url: "https://pictory.ai"
+            },
+
+            // Music/Audio (15 tools)
+            {
+                name: "Suno AI",
+                category: "music",
+                description: "텍스트 프롬프트로 완전한 음악을 생성하는 AI 플랫폼입니다.",
+                rating: 4.5,
+                users: "12.0M",
+                price: "무료/월 $10",
+                icon: "https://suno.com/favicon.ico",
+                url: "https://suno.com"
+            },
+            {
+                name: "ElevenLabs",
+                category: "music",
+                description: "고품질 AI 음성 합성 및 클로닝 서비스를 제공하는 플랫폼입니다.",
+                rating: 4.7,
+                users: "21.9M",
+                price: "무료/월 $5",
+                icon: "https://logo.clearbit.com/elevenlabs.io",
+                url: "https://elevenlabs.io"
+            },
+            {
+                name: "Murf",
+                category: "music",
+                description: "AI 보이스오버 생성기로, 자연스러운 음성을 만들어냅니다.",
+                rating: 4.4,
+                users: "8.2M",
+                price: "무료/월 $19",
+                icon: "https://logo.clearbit.com/murf.ai",
+                url: "https://murf.ai"
+            },
+            {
+                name: "Speechify",
+                category: "music",
+                description: "텍스트를 자연스러운 음성으로 변환하는 TTS 도구입니다.",
+                rating: 4.3,
+                users: "15.6M",
+                price: "무료/월 $11.58",
+                icon: "https://logo.clearbit.com/speechify.com",
+                url: "https://speechify.com"
+            },
+            {
+                name: "Descript",
+                category: "music",
+                description: "오디오 및 비디오 편집을 위한 AI 기반 도구입니다.",
+                rating: 4.2,
+                users: "4.7M",
+                price: "무료/월 $12",
+                icon: "https://logo.clearbit.com/descript.com",
+                url: "https://descript.com"
+            },
+            {
+                name: "AIVA",
+                category: "music",
+                description: "AI 작곡가로, 클래식부터 현대 음악까지 다양한 장르의 음악을 작곡합니다.",
+                rating: 4.1,
+                users: "1.8M",
+                price: "무료/월 $11",
+                icon: "https://aiva.ai/favicon.ico",
+                url: "https://aiva.ai"
+            },
+            {
+                name: "Udio",
+                category: "music",
+                description: "AI 음악 생성 플랫폼으로, 다양한 장르의 음악을 창작할 수 있습니다.",
+                rating: 4.3,
+                users: "3.2M",
+                price: "무료/월 $10",
+                icon: "https://udio.com/favicon.ico",
+                url: "https://udio.com"
+            },
+
+            // Coding (12 tools)
+            {
+                name: "GitHub Copilot",
+                category: "code",
+                description: "GitHub와 OpenAI가 개발한 AI 코딩 어시스턴트입니다.",
+                rating: 4.6,
+                users: "1.3M",
+                price: "월 $10",
+                icon: "https://logo.clearbit.com/github.com",
+                url: "https://github.com/features/copilot"
+            },
+            {
+                name: "Cursor",
+                category: "code",
+                description: "AI 기반 코드 편집기로, 개발자 생산성을 향상시킵니다.",
+                rating: 4.5,
+                users: "6.9M",
+                price: "무료/월 $20",
+                icon: "https://cursor.sh/favicon.ico",
+                url: "https://cursor.sh"
+            },
+            {
+                name: "Replit",
+                category: "code",
+                description: "AI 지원 온라인 IDE로, 코드 작성, 협업 및 배포가 가능합니다.",
+                rating: 4.4,
+                users: "11.8M",
+                price: "무료/월 $7",
+                icon: "https://logo.clearbit.com/replit.com",
+                url: "https://replit.com"
+            },
+            {
+                name: "Tabnine",
+                category: "code",
+                description: "AI 코드 완성 도구로, 개발자의 코딩 속도를 향상시킵니다.",
+                rating: 4.3,
+                users: "2.1M",
+                price: "무료/월 $12",
+                icon: "https://logo.clearbit.com/tabnine.com",
+                url: "https://tabnine.com"
+            },
+            {
+                name: "CodeT5",
+                category: "code",
+                description: "Salesforce의 AI 코드 생성 모델입니다.",
+                rating: 4.2,
+                users: "890K",
+                price: "무료",
+                icon: "https://logo.clearbit.com/salesforce.com",
+                url: "https://github.com/salesforce/CodeT5"
+            },
+
+            // Productivity (22 tools)
+            {
+                name: "Notion AI",
+                category: "productivity",
+                description: "Notion에 통합된 AI 기능으로, 문서 작성과 정리를 도와줍니다.",
+                rating: 4.5,
+                users: "30.0M",
+                price: "무료/월 $8",
+                icon: "https://logo.clearbit.com/notion.so",
+                url: "https://notion.so"
+            },
+            {
+                name: "Gamma",
+                category: "productivity",
+                description: "AI로 프레젠테이션, 웹페이지, 문서를 자동 생성하는 플랫폼입니다.",
+                rating: 4.6,
+                users: "26.1M",
+                price: "무료/월 $8",
+                icon: "https://gamma.app/favicon.ico",
+                url: "https://gamma.app"
+            },
+            {
+                name: "Grammarly",
+                category: "productivity",
+                description: "AI 기반 글쓰기 도우미로, 문법과 스타일을 개선해줍니다.",
+                rating: 4.4,
+                users: "30.0M",
+                price: "무료/월 $12",
+                icon: "https://logo.clearbit.com/grammarly.com",
+                url: "https://grammarly.com"
+            },
+            {
+                name: "Otter.ai",
+                category: "productivity",
+                description: "AI 기반 회의 전사 및 노트 작성 도구입니다.",
+                rating: 4.3,
+                users: "5.2M",
+                price: "무료/월 $8.33",
+                icon: "https://logo.clearbit.com/otter.ai",
+                url: "https://otter.ai"
+            },
+            {
+                name: "Zapier",
+                category: "productivity",
+                description: "AI 기반 워크플로우 자동화 플랫폼입니다.",
+                rating: 4.5,
+                users: "6.0M",
+                price: "무료/월 $19.99",
+                icon: "https://logo.clearbit.com/zapier.com",
+                url: "https://zapier.com"
+            },
+
+            // Education (16 tools)
+            {
+                name: "Khan Academy",
+                category: "education",
+                description: "AI 튜터 기능이 추가된 무료 온라인 교육 플랫폼입니다.",
+                rating: 4.7,
+                users: "18.0M",
+                price: "무료",
+                icon: "https://logo.clearbit.com/khanacademy.org",
+                url: "https://khanacademy.org"
+            },
+            {
+                name: "Knowt",
+                category: "education",
+                description: "AI 학습 도구와 수백만 개의 자료를 갖춘 무료 Quizlet 대안입니다.",
+                rating: 4.4,
+                users: "6.4M",
+                price: "무료/월 $5.99",
+                icon: "https://knowt.com/favicon.ico",
+                url: "https://knowt.com"
+            },
+            {
+                name: "StudyX",
+                category: "education",
+                description: "AI 수학 해결사 및 숙제 도우미로, 단계별 솔루션을 제공합니다.",
+                rating: 4.3,
+                users: "2.9M",
+                price: "무료/월 $9.99",
+                icon: "https://studyx.ai/favicon.ico",
+                url: "https://studyx.ai"
+            },
+            {
+                name: "TurboLearn",
+                category: "education",
+                description: "강의에서 노트, 플래시카드, 퀴즈를 생성하여 학습을 향상시키는 AI 도구입니다.",
+                rating: 4.2,
+                users: "4.1M",
+                price: "무료/월 $7.99",
+                icon: "https://turbolearn.ai/favicon.ico",
+                url: "https://turbolearn.ai"
+            },
+            {
+                name: "Quizlet",
+                category: "education",
+                description: "AI 기반 학습 도구로, 플래시카드와 퀴즈를 자동 생성합니다.",
+                rating: 4.1,
+                users: "60.0M",
+                price: "무료/월 $7.99",
+                icon: "https://logo.clearbit.com/quizlet.com",
+                url: "https://quizlet.com"
+            }
+        ];
+
+        let currentTools = [];
+        let currentPage = 0;
+        const toolsPerPage = 12;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateVisitorCount();
+            displayTools();
+            setupEventListeners();
+        });
+
+        function updateVisitorCount() {
+            // Simulate visitor count update
+            const today = new Date().toDateString();
+            let todayCount = localStorage.getItem('todayVisitors_' + today) || 0;
+            let totalCount = localStorage.getItem('totalVisitors') || 25891;
+            
+            todayCount = parseInt(todayCount) + 1;
+            totalCount = parseInt(totalCount) + 1;
+            
+            localStorage.setItem('todayVisitors_' + today, todayCount);
+            localStorage.setItem('totalVisitors', totalCount);
+            
+            document.getElementById('todayVisitors').textContent = todayCount.toLocaleString();
+            document.getElementById('totalVisitors').textContent = totalCount.toLocaleString();
+        }
+
+        function setupEventListeners() {
+            // Search
+            document.getElementById('searchInput').addEventListener('input', filterTools);
+            
+            // Category buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    filterTools();
+                });
+            });
+
+            // Filters
+            document.getElementById('priceFilter').addEventListener('change', filterTools);
+            document.getElementById('ratingFilter').addEventListener('change', filterTools);
+            document.getElementById('sortFilter').addEventListener('change', filterTools);
+            document.getElementById('discountFilter').addEventListener('change', filterTools);
+
+            // Load more
+            document.getElementById('loadMoreBtn').addEventListener('click', loadMoreTools);
+
+            // Modal
+            const modal = document.getElementById('aiModal');
+            const closeBtn = document.getElementsByClassName('close')[0];
+            closeBtn.onclick = () => modal.style.display = 'none';
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        function filterTools() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.querySelector('.category-btn.active').dataset.category;
+            const priceFilter = document.getElementById('priceFilter').value;
+            const ratingFilter = document.getElementById('ratingFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+            const discountOnly = document.getElementById('discountFilter').checked;
+
+            let filtered = aiTools.filter(tool => {
+                // Search filter
+                if (searchTerm && !tool.name.toLowerCase().includes(searchTerm) && 
+                    !tool.description.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+
+                // Category filter
+                if (category !== 'all' && tool.category !== category) {
+                    return false;
+                }
+
+                // Price filter
+                if (priceFilter !== 'all') {
+                    if (priceFilter === 'free' && !tool.price.includes('무료')) return false;
+                    if (priceFilter === 'freemium' && (!tool.price.includes('무료') || !tool.price.includes('월'))) return false;
+                    if (priceFilter === 'paid' && tool.price.includes('무료') && !tool.price.includes('월')) return false;
+                }
+
+                // Rating filter
+                if (ratingFilter !== 'all') {
+                    if (ratingFilter === 'high' && tool.rating < 4.5) return false;
+                    if (ratingFilter === 'medium' && tool.rating < 4.0) return false;
+                    if (ratingFilter === 'low' && tool.rating < 3.5) return false;
+                }
+
+                return true;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                switch (sortFilter) {
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'users':
+                        return parseFloat(b.users) - parseFloat(a.users);
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    default: // popular
+                        return parseFloat(b.users) - parseFloat(a.users);
+                }
+            });
+
+            currentTools = filtered;
+            currentPage = 0;
+            displayTools();
+        }
+
+        function displayTools() {
+            const grid = document.getElementById('aiToolsGrid');
+            const startIndex = 0;
+            const endIndex = (currentPage + 1) * toolsPerPage;
+            const toolsToShow = currentTools.slice(startIndex, endIndex);
+
+            if (currentPage === 0) {
+                grid.innerHTML = '';
+            }
+
+            toolsToShow.slice(currentPage * toolsPerPage).forEach(tool => {
+                const toolCard = createToolCard(tool);
+                grid.appendChild(toolCard);
+            });
+
+            // Update load more button
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (endIndex >= currentTools.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+
+            // Update total count
+            document.getElementById('totalCount').textContent = currentTools.length;
+        }
+
+        function createToolCard(tool) {
+            const div = document.createElement('div');
+            div.className = 'ai-card p-6 cursor-pointer';
+            div.onclick = () => showModal(tool);
+
+            div.innerHTML = `
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <img src="${tool.icon}" alt="${tool.name}" class="icon-img" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzY2N2VlYSIvPgo8dGV4dCB4PSIxMiIgeT0iMTYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkFJPC90ZXh0Pgo8L3N2Zz4K'">
+                        <div>
+                            <h3 class="font-bold text-lg">${tool.name}</h3>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">${getCategoryName(tool.category)}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm text-gray-500">${tool.users} 사용자</div>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 text-sm mb-4 line-clamp-2">${tool.description}</p>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-1">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="font-semibold">${tool.rating}</span>
+                        </div>
+                        <div class="text-sm text-blue-600 font-semibold">${tool.price}</div>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors">
+                        자세히 보기
+                    </button>
+                </div>
+            `;
+
+            return div;
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'chat': 'AI 채팅',
+                'image': '이미지',
+                'video': '동영상',
+                'music': '음성/음악',
+                'code': '코딩',
+                'productivity': '생산성',
+                'education': '교육'
+            };
+            return names[category] || category;
+        }
+
+        function showModal(tool) {
+            const modal = document.getElementById('aiModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="flex items-center space-x-4 mb-6">
+                    <img src="${tool.icon}" alt="${tool.name}" class="w-16 h-16 rounded-lg" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iOCIgZmlsbD0iIzY2N2VlYSIvPgo8dGV4dCB4PSIzMiIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkFJPC90ZXh0Pgo8L3N2Zz4K'">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">${tool.name}</h2>
+                        <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">${getCategoryName(tool.category)}</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3">📊 기본 정보</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">💰 가격:</span>
+                                <span class="font-semibold">${tool.price}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">⭐ 평점:</span>
+                                <span class="font-semibold">${tool.rating}/5</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">👥 사용자 수:</span>
+                                <span class="font-semibold">${tool.users}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3">🚀 주요 기능</h3>
+                        <ul class="text-sm space-y-1">
+                            ${tool.features ? tool.features.map(feature => `<li>• ${feature}</li>`).join('') : '<li>• 고품질 AI 서비스</li><li>• 사용자 친화적 인터페이스</li><li>• 빠른 처리 속도</li>'}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="font-semibold text-lg mb-3">📝 설명</h3>
+                    <p class="text-gray-600 leading-relaxed">${tool.description}</p>
+                </div>
+
+                ${tool.pros ? `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3 text-green-600">✅ 장점</h3>
+                        <ul class="text-sm space-y-1">
+                            ${tool.pros.map(pro => `<li class="text-green-700">• ${pro}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3 text-red-600">❌ 단점</h3>
+                        <ul class="text-sm space-y-1">
+                            ${tool.cons.map(con => `<li class="text-red-700">• ${con}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="text-center">
+                    <a href="${tool.url}" target="_blank" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        공식 사이트에서 방문
+                    </a>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function loadMoreTools() {
+            currentPage++;
+            displayTools();
+        }
+
+        // Initialize display
+        filterTools();
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDuI1o2d13IwWpyn%2F9PbNYcP%2BuUe9pEaC5mz37gTJAvQGiS6sQrS9dYCMsBNtVgd3V2DKr%2Bra4em%2BW88NxbXlzTf8eqvjdIfBDi9tVk8ops10jPYV0Xk%2FiPAEY6N%2FJzUjZUBMTyO3ZS6Y1OCP8%2FQvmiXbm8ztUUjfLF7b%2F5DAutU4tI8SofO36%2Bp79qydkojAvSwpo7UA6bi8d5RFQ92skIAx6cYWiJaDNBlavw3lv7wHn%2FEy3LO5%2BfUVKlc3iBx7iVyD4WQt%2B%2F3miyqC8PFQPjCBSj6Mii%2Bxc%2B9H2VO2qXUBm4WfmROCs%2BnmNQGOGniaKa%2FBb6GOKXcAJ1laAfjOMbevjrbTRxJGspIgx63LOSrbA%2BdO38ihy50IAK24IMhx7hWnltmdp0PQKDC3V6VfPZMtuzvueKrDcSXANDcJEKW1wWKcJi3P%2ByUaG6aTqcsB%2BGnmHgDGNtc9JFvKbqPYc%2FpRmz3FHbY%2BqMsv03yLtFvra3ApGDQqkbtrFBN2H7iXiQ%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDuI1o2d13IwWpyn/9PbNYcP+uUe9pEaC5mz37gTJAvQGiS6sQrS9dYCMsBNtVgd3V2DKr+ra4em+W88NxbXlzTf8eqvjdIfBDi9tVk8ops10jPYV0Xk/iPAEY6N/JzUjZUBMTyO3ZS6Y1OCP8/QvmiXbm8ztUUjfLF7b/5DAutU4tI8SofO36+p79qydkojAvSwpo7UA6bi8d5RFQ92skIAx6cYWiJaDNBlavw3lv7wHn/Ey3LO5+fUVKlc3iBx7iVyD4WQt+/3miyqC8PFQPjCBSj6Mii+xc+9H2VO2qXUBm4WfmROCs+nmNQGOGniaKa/Bb6GOKXcAJ1laAfjOMbevjrbTRxJGspIgx63LOSrbA+dO38ihy50IAK24IMhx7hWnltmdp0PQKDC3V6VfPZMtuzvueKrDcSXANDcJEKW1wWKcJi3P+yUaG6aTqcsB+GnmHgDGNtc9JFvKbqPYc/pRmz3FHbY+qMsv03yLtFvra3ApGDQqkbtrFBN2H7iXiQ==";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
